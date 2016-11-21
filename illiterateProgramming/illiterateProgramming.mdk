@@ -11,9 +11,9 @@ Author        : Gilad Bracha
 
 [TITLE]
 
-#Prelude
 
-The text below was written some time ago, but I have not been blogging much and have let it languish. In the meantime, there has been some exciting activity in this field with the release of [Eve](http://incidentalcomplexity.com/index.html). This is most encouraging, though I remain skeptical that the general programming population will take up literate programming; I'd be delighted to be proven wrong though.
+
+*The text below was written some time ago, but I have not been blogging much and have let it languish. In the meantime, there has been some exciting activity in this field with the release of [Eve](http://incidentalcomplexity.com/index.html). This is most encouraging, though I remain skeptical that the general programming population will take up literate programming; I'd be delighted to be proven wrong though.*
 
 
 #Overview
@@ -116,7 +116,7 @@ explain Ampleforth using itself.
 
 In this section, I'll give a quick overview how Newspeak literate programs work. Some detail will be glossed over: how the IDE and GUI work in the browser, and what machinations are needed to handle the back button especially. 
 
-You'll need some basic familiarity with Newspeak syntax. This [short tutorial](http://gbracha.github.io/literate/literate.html) (also written with Ampleforth) covers the basics.
+You'll need some basic familiarity with Newspeak syntax. This [short tutorial](http://newspeaklanguage.org/samples/Literate/Literate.html) (also written with Ampleforth) covers the basics.
 
 ## Displaying Literate Programs
 

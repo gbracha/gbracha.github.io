@@ -301,9 +301,9 @@
 <div class="title para-block" style="font-size:xx-large;font-weight:bold;margin-bottom:0.5ex;line-adjust:0">Illiterate Programming</div></div>
 <div class="authors align-center" style="text-align:center;width:80%;line-adjust:0"><table class="authorrow columns block" style="margin-top:2ex;width:100%;line-adjust:0">
 <tbody><tr><td class="author column" style="text-align:center;line-adjust:0">
-<div class="authorname" style="font-size:large;line-adjust:0">Gilad Bracha</div></td></tr></tbody></table></div></div><h2 id="sec-prelude" class="h1" data-heading-depth="1" style="display:block"><span class="heading-before"><span class="heading-label">1</span>.&#8194;</span>Prelude</h2>
-<p class="p noindent">The text below was written some time ago, but I have not been blogging much and have let it languish. In the meantime, there has been some exciting activity in this field with the release of&nbsp;<a href="http://incidentalcomplexity.com/index.html">Eve</a>. This is most encouraging, though I remain skeptical that the general programming population will take up literate programming; I&#39;d be delighted to be proven wrong though.
-</p><h2 id="sec-overview" class="h1" data-heading-depth="1" style="display:block"><span class="heading-before"><span class="heading-label">2</span>.&#8194;</span>Overview</h2>
+<div class="authorname" style="font-size:large;line-adjust:0">Gilad Bracha</div></td></tr></tbody></table></div></div>
+<p class="p noindent para-continued"><em class="em-star1">The text below was written some time ago, but I have not been blogging much and have let it languish. In the meantime, there has been some exciting activity in this field with the release of&nbsp;<a href="http://incidentalcomplexity.com/index.html">Eve</a>. This is most encouraging, though I remain skeptical that the general programming population will take up literate programming; I&#39;d be delighted to be proven wrong though.</em>
+</p><h2 id="sec-overview" class="h1" data-heading-depth="1" style="display:block"><span class="heading-before"><span class="heading-label">1</span>.&#8194;</span>Overview</h2>
 <p class="p noindent"> 
 Donald Knuth’s concept of
 <a href="http://www-cs-faculty.stanford.edu/~uno/lp.html">literate programming</a> 
@@ -390,11 +390,11 @@ You can use this browser to explore the IDE itself. Click on the link labeled <e
 <p class="p indent">How does it work? Well, in the spirit of self application and 
 dogfooding (it&#39;s a self-eating-dog-eat-self-eating dog world), let&#39;s 
 explain Ampleforth using itself. 
-</p><h2 id="sec-newspeak-lps-the-short-version" class="h1" data-heading-depth="1" style="display:block"><span class="heading-before"><span class="heading-label">3</span>.&#8194;</span>Newspeak LPs, the Short Version</h2>
+</p><h2 id="sec-newspeak-lps-the-short-version" class="h1" data-heading-depth="1" style="display:block"><span class="heading-before"><span class="heading-label">2</span>.&#8194;</span>Newspeak LPs, the Short Version</h2>
 <p class="p noindent">In this section, I&#39;ll give a quick overview how Newspeak literate programs work. Some detail will be glossed over: how the IDE and GUI work in the browser, and what machinations are needed to handle the back button especially. 
 </p>
-<p class="p indent">You&#39;ll need some basic familiarity with Newspeak syntax. This&nbsp;<a href="http://gbracha.github.io/literate/literate.html">short tutorial</a> (also written with Ampleforth) covers the basics.
-</p><h3 id="sec-displaying-literate-programs" class="h2" data-heading-depth="2" style="display:block"><span class="heading-before"><span class="heading-label">3.1</span>.&#8194;</span>Displaying Literate Programs</h3>
+<p class="p indent">You&#39;ll need some basic familiarity with Newspeak syntax. This&nbsp;<a href="http://newspeaklanguage.org/samples/Literate/Literate.html">short tutorial</a> (also written with Ampleforth) covers the basics.
+</p><h3 id="sec-displaying-literate-programs" class="h2" data-heading-depth="2" style="display:block"><span class="heading-before"><span class="heading-label">2.1</span>.&#8194;</span>Displaying Literate Programs</h3>
 <p class="p noindent">The <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code> class implements the display of literate programs.
 </p><div class="classPresenter" className = "Ampleforth"> </div>
 
@@ -408,7 +408,7 @@ explain Ampleforth using itself.
 <p class="p indent">A similar process is used for <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processMinibrowsers</code> and for  <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processClassPresenters</code>. You can check those out if you wish.
 </p>
 <p class="p indent">When a web page representing an LP starts up, it includes <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code> (more precisely, <code class="code code1 language-newspeak lang-newspeak newspeak colorized">ampleforth<span style="color:blue">.</span>js</code>, the translation of <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code> into Javascript). If you view the source of this page, you&#39;ll see the reference to the script at the very end of the source code. The script runs <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code>&#39;s <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:teal">main</span>:<span style="color:teal">args</span>:</code> method. As we just saw, this will have the effect of modifying the page&#39;s DOM to include Newspeak presenters for viewing the relevant code.
-</p><h3 id="sec-creating-literate-programs" class="h2" data-heading-depth="2" style="display:block"><span class="heading-before"><span class="heading-label">3.2</span>.&#8194;</span>Creating Literate Programs</h3>
+</p><h3 id="sec-creating-literate-programs" class="h2" data-heading-depth="2" style="display:block"><span class="heading-before"><span class="heading-label">2.2</span>.&#8194;</span>Creating Literate Programs</h3>
 <p class="p noindent">Now we can understand what Madoko has to do to help us create literate programs.  We need to be able to embed HTML elements marked with <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:navy">class</span> = &quot;evaluator&quot;</code>, with an <code class="code code1 language-newspeak lang-newspeak newspeak colorized">expression</code> attribute of our choice. The example we started with, <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span class="constant" style="color:purple">3</span>+<span class="constant" style="color:purple">4</span></code>, is represented as
 </p>
 <p class="p indent"><code class="code code1 language-newspeak lang-newspeak newspeak colorized">&lt;div <span style="color:navy">class</span>=&quot;evaluator&quot; expression=&quot;<span class="constant" style="color:purple">3</span>+<span class="constant" style="color:purple">4</span>&quot;&gt; &lt;/div&gt;</code>
