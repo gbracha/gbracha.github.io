@@ -283,7 +283,14 @@
   }
   
     </style>
-  
+  <style>
+                  .evaluator + pre {
+                    display: none; 
+                  }
+                  .preview .evaluator + pre {
+                    display: block;
+                  }
+                  </style>
   </head>
 <body class="madoko">
 
@@ -370,7 +377,7 @@ The result is printed out; <strong class="strong-star2">note that the print out 
 
 <p class="p noindent">The object inspector is your gateway into the Newspeak IDE. 
 You can see that 3+4 evaluates to 7; once you inspect 7, you can 
-see that it is an instance of class <code class="code code1">Number</code>. Click on <code class="code code1">Number</code> and 
+see that it is an instance of class <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Number</span></code>. Click on <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Number</span></code> and 
 you enter a class presenter where you can browse its methods and 
 link to its enclosing class.
 </p>
@@ -378,7 +385,7 @@ link to its enclosing class.
 </p><div class="minibrowser"> </div>
 
 <p class="p noindent">The above is the top level of the IDE; it shows you an object inspector on the Newspeak platform, which is itself an object (chew on that for a while). 
-You can use this browser to explore the IDE itself. Click on the link labeled <em class="em-star1">Inspect Presenter</em>. Now you see an inspector on the IDE object that is presenting the platform object. Its class is shown to be <code class="code code1">ObjectPresenter</code>. You can use that link to see the actual code used to present objects. In fact you can even change that code. The ability to change the code of the system you are using while using it is a key property that is lacking in most systems.
+You can use this browser to explore the IDE itself. Click on the link labeled <em class="em-star1">Inspect Presenter</em>. Now you see an inspector on the IDE object that is presenting the platform object. Its class is shown to be <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">ObjectPresenter</span></code>. You can use that link to see the actual code used to present objects. In fact you can even change that code. The ability to change the code of the system you are using while using it is a key property that is lacking in most systems.
 </p>
 <p class="p indent">How does it work? Well, in the spirit of self application and 
 dogfooding (it&#39;s a self-eating-dog-eat-self-eating dog world), let&#39;s 
@@ -388,31 +395,31 @@ explain Ampleforth using itself.
 </p>
 <p class="p indent">You&#39;ll need some basic familiarity with Newspeak syntax. This&nbsp;<a href="http://gbracha.github.io/literate/literate.html">short tutorial</a> (also written with Ampleforth) covers the basics.
 </p><h3 id="sec-displaying-literate-programs" class="h2" data-heading-depth="2" style="display:block"><span class="heading-before"><span class="heading-label">3.1</span>.&#8194;</span>Displaying Literate Programs</h3>
-<p class="p noindent">The <code class="code code1">Ampleforth</code> class implements the display of literate programs.
+<p class="p noindent">The <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code> class implements the display of literate programs.
 </p><div class="classPresenter" className = "Ampleforth"> </div>
 
 <p class="p noindent"> 
-<code class="code code1">Ampleforth</code> is a Newspeak application, which just means it follows certain conventions to make it deployable. The convention you need to understand right now is that execution of a Newspeak app always starts with the method <code class="code code1">main:args:</code>.
+<code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code> is a Newspeak application, which just means it follows certain conventions to make it deployable. The convention you need to understand right now is that execution of a Newspeak app always starts with the method <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:teal">main</span>:<span style="color:teal">args</span>:</code>.
 </p>
-<p class="p indent">Open  <code class="code code1">main:args:</code>. You&#39;ll see that we start out by instantiating the class <code class="code code1">BrowsingForHTML</code>, which implements the subset of the IDE that runs on the web. <code class="code code1">Ampleforth</code> then adds itself to the IDE namespace, so we can browse it from within itself. The next step is to instantiate the nested class <code class="code code1">Embedder</code>, which is responsible for embedding Newspeak widgets into the text of the surrounding web page. We then send the embedder a series of messages - <code class="code code1">processEvaluators</code>, <code class="code code1">processMinibrowsers</code> and <code class="code code1">processClassPresenters</code>. Let&#39;s look at <code class="code code1">processEvaluator</code>.
+<p class="p indent">Open  <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:teal">main</span>:<span style="color:teal">args</span>:</code>. You&#39;ll see that we start out by instantiating the class <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">BrowsingForHTML</span></code>, which implements the subset of the IDE that runs on the web. <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code> then adds itself to the IDE namespace, so we can browse it from within itself. The next step is to instantiate the nested class <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Embedder</span></code>, which is responsible for embedding Newspeak widgets into the text of the surrounding web page. We then send the embedder a series of messages - <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processEvaluators</code>, <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processMinibrowsers</code> and <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processClassPresenters</code>. Let&#39;s look at <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processEvaluator</code>.
 </p>
-<p class="p indent">To do this, click on the nested class <code class="code code1">Embedder</code> and open the <code class="code code1">processEvaluators</code> method. Using  aliens (Newspeak&#39;s FFI) we obtain a reference to the DOM in the local variable <code class="code code1">document</code>. We then query the document for all elements with a <code class="code code1">class</code> attribute with value  <code class="code code1">evaluator</code>. We go through each such element and insert a <code class="code code1">HopscotchWindow</code> into it, opened on an evaluator for the element&#39;s expression, as given in its <code class="code code1">expression</code> attribute.
+<p class="p indent">To do this, click on the nested class <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Embedder</span></code> and open the <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processEvaluators</code> method. Using  aliens (Newspeak&#39;s FFI) we obtain a reference to the DOM in the local variable <code class="code code1 language-newspeak lang-newspeak newspeak colorized">document</code>. We then query the document for all elements with a <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:navy">class</span></code> attribute with value  <code class="code code1 language-newspeak lang-newspeak newspeak colorized">evaluator</code>. We go through each such element and insert a <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">HopscotchWindow</span></code> into it, opened on an evaluator for the element&#39;s expression, as given in its <code class="code code1 language-newspeak lang-newspeak newspeak colorized">expression</code> attribute.
 </p>
-<p class="p indent">A similar process is used for <code class="code code1">processMinibrowsers</code> and for  <code class="code code1">processClassPresenters</code>. You can check those out if you wish.
+<p class="p indent">A similar process is used for <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processMinibrowsers</code> and for  <code class="code code1 language-newspeak lang-newspeak newspeak colorized">processClassPresenters</code>. You can check those out if you wish.
 </p>
-<p class="p indent">When a web page representing an LP starts up, it includes <code class="code code1">Ampleforth</code> (more precisely, <code class="code code1">ampleforth.js</code>, the translation of <code class="code code1">Ampleforth</code> into Javascript). If you view the source of this page, you&#39;ll see the reference to the script at the very end of the source code. The script runs <code class="code code1">Ampleforth</code>&#39;s <code class="code code1">main:args:</code> method. As we just saw, this will have the effect of modifying the page&#39;s DOM to include Newspeak presenters for viewing the relevant code.
+<p class="p indent">When a web page representing an LP starts up, it includes <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code> (more precisely, <code class="code code1 language-newspeak lang-newspeak newspeak colorized">ampleforth<span style="color:blue">.</span>js</code>, the translation of <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code> into Javascript). If you view the source of this page, you&#39;ll see the reference to the script at the very end of the source code. The script runs <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:purple">Ampleforth</span></code>&#39;s <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:teal">main</span>:<span style="color:teal">args</span>:</code> method. As we just saw, this will have the effect of modifying the page&#39;s DOM to include Newspeak presenters for viewing the relevant code.
 </p><h3 id="sec-creating-literate-programs" class="h2" data-heading-depth="2" style="display:block"><span class="heading-before"><span class="heading-label">3.2</span>.&#8194;</span>Creating Literate Programs</h3>
-<p class="p noindent">Now we can understand what Madoko has to do to help us create literate programs.  We need to be able to embed HTML elements marked with <code class="code code1">class = &quot;evaluator&quot;</code>, with an <code class="code code1">expression</code> attribute of our choice. The example we started with, <code class="code code1">3+4</code>, is represented as
+<p class="p noindent">Now we can understand what Madoko has to do to help us create literate programs.  We need to be able to embed HTML elements marked with <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span style="color:navy">class</span> = &quot;evaluator&quot;</code>, with an <code class="code code1 language-newspeak lang-newspeak newspeak colorized">expression</code> attribute of our choice. The example we started with, <code class="code code1 language-newspeak lang-newspeak newspeak colorized"><span class="constant" style="color:purple">3</span>+<span class="constant" style="color:purple">4</span></code>, is represented as
 </p>
-<p class="p indent"><code class="code code1">&lt;div class=&quot;evaluator&quot; expression=&quot;3+4&quot;&gt; &lt;/div&gt;</code>
+<p class="p indent"><code class="code code1 language-newspeak lang-newspeak newspeak colorized">&lt;div <span style="color:navy">class</span>=&quot;evaluator&quot; expression=&quot;<span class="constant" style="color:purple">3</span>+<span class="constant" style="color:purple">4</span>&quot;&gt; &lt;/div&gt;</code>
 </p>
 <p class="p indent">(if you check the source, you&#39;ll see some additional webcrap Madoko puts in as well). For presenters other than evaluators, we would similarly use divs with the appropriate class and attributes. To embed a top level IDE browser (aka Minibrowser) we&#39;d write
 </p>
-<p class="p indent"><code class="code code1">&lt;div class=&quot;minibrowser&quot;&gt; &lt;/div&gt;</code>
+<p class="p indent"><code class="code code1 language-newspeak lang-newspeak newspeak colorized">&lt;div <span style="color:navy">class</span>=&quot;minibrowser&quot;&gt; &lt;/div&gt;</code>
 </p>
-<p class="p indent">We also need to put a reference to <code class="code code1">ampleforth.js</code> at the end of the HTML page produced.  It&#39;s important that the script goes at the end of the page, so that all elements of class evaluator are already in the DOM when the script runs.
+<p class="p indent">We also need to put a reference to <code class="code code1 language-newspeak lang-newspeak newspeak colorized">ampleforth<span style="color:blue">.</span>js</code> at the end of the HTML page produced.  It&#39;s important that the script goes at the end of the page, so that all elements of class evaluator are already in the DOM when the script runs.
 </p>
-<p class="p indent">To get Madoko to do this for us, we put <code class="code code1">[INCLUDE=newspeak]</code> at the top of our Madoko file, which is the source for the literate program. This tells Madoko that we are in newspeak mode. Newspeak mode is due to Daan Leijen, and it is full of Madoko magic that we won&#39;t discuss further in this section.
+<p class="p indent">To get Madoko to do this for us, we put <code class="code code1 language-newspeak lang-newspeak newspeak colorized">[<span style="color:purple">INCLUDE</span>=newspeak]</code> at the top of our Madoko file, which is the source for the literate program. This tells Madoko that we are in newspeak mode. Newspeak mode is due to Daan Leijen, and it is full of Madoko magic that we won&#39;t discuss further in this section.
 </p>
 <p class="p indent">To make this work smoothly, we&#39;d want to teach newspeak mode about these special divs, so we can easily insert them into our document. Otherwise we have to insert the HTML into the doc ourselves. Currently Madoko&#39;s newspeak mode only knows about evaluators.
 </p>
@@ -423,5 +430,5 @@ explain Ampleforth using itself.
 <p class="p indent">Finally, the current approach has one glaring architectural flaw, but I won&#39;t tell you what it is. It should be obvious.
 </p><span data-line=""></span></div>
 </body>
-
+<script type="text/javascript" class="preview" src="Ampleforth.js"></script> <script type="text/javascript" class="preview" src="Ampleforth.sources.js"></script>
 </html>
