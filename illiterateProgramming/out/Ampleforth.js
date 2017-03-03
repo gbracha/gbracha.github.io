@@ -69088,7 +69088,7 @@ var mixins = new function () {
   this.$processMinibrowsers = function () {
    var self = this;
    self._$domElementsWithClass$do$("minibrowser", function ($element) {
-    return self._$EmbeddedHopscotchWindow().$into$openSubject$($element, self._$browsing().$ObjectSubject().$onModel$(self._$platformMirror()));
+    return self._$EmbeddedHopscotchWindow().$into$openSubject$($element, self._$browsing().$HomeSubject().$new());
    });
    return self;
   };
