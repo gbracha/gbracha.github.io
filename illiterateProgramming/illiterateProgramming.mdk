@@ -104,8 +104,10 @@ You can also embed the IDE directly like so:
 <div class="minibrowser"> </div>
   ~
 
-The above is the top level of the IDE; it shows you an object inspector on the Newspeak platform, which is itself an object (chew on that for a while). 
-You can use this browser to explore the IDE itself. Click on the link labeled *Inspect Presenter*. Now you see an inspector on the IDE object that is presenting the platform object. Its class is shown to be `ObjectPresenter`. You can use that link to see the actual code used to present objects. In fact you can even change that code. The ability to change the code of the system you are using while using it is a key property that is lacking in most systems.
+The above is the top level of the IDE; it provides links to the sources of all Newspeak module declarations in the system, via Newspeak sources. And it provides access to workspaces where you can evaluate code. If you click on the link labeled *Workspaces* you'll see the workspace manager, with an open workspace. You can evaluate code there. Type in the *platform*. The result is shown via a link below; if you follow the link you'll see an object inspector on the Newspeak platform, which is itself an object (chew on that for a while).
+
+
+You can use this browser to explore the IDE itself.  Click on the link labeled *Inspect Presenter*. Now you see an inspector on the IDE object that is presenting the platform object. Its class is shown to be `ObjectPresenter`. You can use that link to see the actual code used to present objects. In fact you can even change that code. The ability to change the code of the system you are using while using it is a key property that is lacking in most systems.
 
 
 How does it work? Well, in the spirit of self application and 
@@ -129,9 +131,10 @@ The `Ampleforth` class implements the display of literate programs.
  
 `Ampleforth` is a Newspeak application, which just means it follows certain conventions to make it deployable. The convention you need to understand right now is that execution of a Newspeak app always starts with the method `main:args:`.
 
-Open  `main:args:`. You'll see that we start out by instantiating the class `BrowsingForHTML`, which implements the subset of the IDE that runs on the web. `Ampleforth` then adds itself to the IDE namespace, so we can browse it from within itself. The next step is to instantiate the nested class `Embedder`, which is responsible for embedding Newspeak widgets into the text of the surrounding web page. We then send the embedder a series of messages - `processEvaluators`, `processMinibrowsers` and `processClassPresenters`. Let's look at `processEvaluator`.
+Open  `main:args:`. You'll see that we start out by instantiating the class `HopscotchIDE`, which implements the subset of the IDE that runs on the web. `Ampleforth` then adds itself to the IDE namespace, so we can browse it from within itself. The next step is to instantiate the  class `Embedder`, which is responsible for embedding Newspeak widgets into the text of the surrounding web page. We then send the resulting instance, `embedder`, the message `start`.
 
-To do this, click on the nested class `Embedder` and open the `processEvaluators` method. Using  aliens (Newspeak's FFI) we obtain a reference to the DOM in the local variable `document`. We then query the document for all elements with a `class` attribute with value  `evaluator`. We go through each such element and insert a `HopscotchWindow` into it, opened on an evaluator for the element's expression, as given in its `expression` attribute.
+Now click on the home icon in the upper right of the Ampleforth class presenter. This will take you to the IDE entry point. Then follow the link labeled *Newspeak Source*. It shows us a list of all the module declarations in the system. Select *AmpleforthEmbedder*.  You can see that it has a public method  `start` which sends a series of messages - `processEvaluators`, `processMinibrowsers` and `processClassPresenters`. Let's look at `processEvaluator`. The code iterates over a collection of DOM elements returned by calling `domElementsWithClass: 'evaluator'`.
+As you'd expect, this gives us the set of DOM elements with a `class` attribute with value  `evaluator`. We go through each such element and insert an `EmbeddedHopscotchWindow` into it, opened on an evaluator for the element's expression, as given in its `expression` attribute.
 
 A similar process is used for `processMinibrowsers` and for  `processClassPresenters`. You can check those out if you wish.
 
@@ -160,7 +163,7 @@ To get Madoko to do this for us, we put `[INCLUDE=newspeak]` at the top of our M
 
 To make this work smoothly, we'd want to teach newspeak mode about these special divs, so we can easily insert them into our document. Otherwise we have to insert the HTML into the doc ourselves. Currently Madoko's newspeak mode only knows about evaluators.
 
-All this is quite nice, but a good deal more needs to be done to create a workable system.  The biggest hurdle is getting the full functionality of the Newspeak IDE to run in the browser. Minibrowser doesn't have the debugger, or the ability to create new classes, and lacks many other features like integrated version control, unit test support and so on. We know how to fix these things, but we haven't gotten round to actually doing so.
+All this is quite nice, but a good deal more needs to be done to create a workable system.  The biggest hurdle is getting the full functionality of the Newspeak IDE to run in the browser. Minibrowser doesn't have the debugger, and lacks many other features like integrated version control, unit test support and so on. We know how to fix these things, but we haven't gotten round to actually doing so.
 
 Of course, one need not implement Ampleforth on top of the web, but it does seem to be the most attractive means of widely distributing such live program documents.
 
