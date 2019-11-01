@@ -18,4 +18,4 @@ Html Header   : <style>
                   display: block;
                 }
                 </style>
-Html Footer   :  <script type="text/javascript" class="preview" src="Ampleforth.sources.js"></script><script type="text/javascript" class="preview" src="Ampleforth.js"></script>
+Html Footer   :  <script type="text/javascript" src="CodeMirror/lib/codemirror.js"></script><link rel="stylesheet" href="CodeMirror/lib/codemirror.css"></link><script type="text/javascript" src="CodeMirror/addon/display/autorefresh.js"></script><script type="text/javascript" class="preview" src="Ampleforth.sources.js"></script><script type="text/javascript" class="preview" src="Ampleforth.js"></script>
