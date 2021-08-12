@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+  <meta name="generator" content="Madoko, version 1.2.0" />
+  <meta name="viewport" content="initial-scale=1.0" />
+  <meta name="author" content="Gilad Bracha" />
+  <title>How is a Programmer Like a Pathologist?</title>
+  <style type="text/css"  class="link">
+  /*# sourceURL=madoko.css */
+  
+  .madoko .toc>.tocblock .tocblock .tocblock {
+    margin-left: 2.25em;
+  }
+  .madoko .toc>.tocblock .tocblock {
+    margin-left: 1.5em;
+  }
+  .madoko .toc-contents>.tocblock>.tocitem {
+    font-weight: bold;
+  }
+  .madoko .toc {
+    margin-top: 1em;
+  }
+  .madoko p.para-continue {
+    margin-bottom: 0pt;
+  }
+  .madoko .para-block+p {
+    margin-top: 0pt;
+  }
+  .madoko ul.para-block, .madoko ol.para-block {
+    margin-top: 0pt;
+    margin-bottom: 0pt;
+  }
+  .madoko ul.para-end, .madoko ol.para-end {
+    margin-bottom: 1em;
+  }
+  .madoko dl {
+    margin-left: 0em;
+  }
+  .madoko blockquote {
+    font-style: italic;
+  }
+  .madoko a.localref {
+    text-decoration: none;
+  }
+  .madoko a.localref:hover {
+    text-decoration: underline;
+  }
+  .madoko .footnotes {
+    font-size: smaller;
+    margin-top: 2em;
+  }
+  .madoko .footnotes hr {
+    width: 50%;
+    text-align: left;
+  }
+  .madoko .footnote {
+    margin-left: 1em;
+  }
+  .madoko .footnote-before {
+    margin-left: -1em;
+    width: 1em;
+    display: inline-block;
+  }
+  .madoko .align-center, .madoko .align-center>p {
+    text-align: center !important;
+  }
+  .madoko .align-center pre {
+    text-align: left;
+  }
+  .madoko .align-center>* {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .madoko .align-left, .madoko .align-left>p {
+    text-align: left !important;
+  }
+  .madoko .align-left>* {
+    margin-left: 0pt !important;
+    margin-right: auto !important;
+  }
+  .madoko .align-right, .madoko .align-right>p {
+    text-align: right !important;
+  }
+  .madoko .align-right>* {
+    margin-left: auto !important;
+    margin-right: 0pt !important;
+  }
+  .madoko .align-center>table,
+  .madoko .align-left>table,
+  .madoko .align-right>table {
+    text-align: left !important;
+  }
+  .madoko .equation-before {
+    float: right;
+  }
+  .madoko .bibitem {
+    font-size: smaller;
+  }
+  .madoko .bibsearch {
+    font-size: x-small;
+    text-decoration:none;
+    color: black;
+    font-family: "Segoe UI Symbol", Symbola, serif;
+  }
+  .madoko .block, .madoko .figure, .madoko .bibitem, .madoko .equation, .madoko div.math {
+    margin-top: 1ex;
+    margin-bottom: 1ex;
+  }
+  .madoko .figure {
+    padding: 0.5em;
+    margin-left: 0pt;
+    margin-right: 0pt;
+  }
+  .madoko .hidden {
+    display: none;
+  }
+  .madoko .invisible {
+    visibility: hidden;
+  }
+  .madoko.preview .invisible {
+    visibility: visible;
+    opacity: 0.5;
+  }
+  .madoko code.code, .madoko span.code {
+    white-space: pre-wrap;
+  }
+  .madoko hr, hr.madoko {
+    border: none;
+    border-bottom: black solid 1px;
+    margin-bottom: 0.5ex;
+  }
+  .madoko .framed>*:first-child {
+    margin-top: 0pt;
+  }
+  .madoko .framed>*:last-child {
+    margin-bottom: 0pt;
+  }
+  .madoko ul.list-style-type-dash {
+      list-style-type: none !important;
+  }
+  .madoko ul.list-style-type-dash > li:before {
+      content: "\2013";
+      position: absolute;
+      margin-left: -1em;
+  }
+  .madoko table.madoko {
+    border-collapse: collapse;
+  }
+  .madoko td, .madoko th {
+    padding: 0ex 0.5ex;
+    margin: 0pt;
+    vertical-align: top;
+  }
+  .madoko .cell-border-left {
+    border-left: 1px solid black;
+  }
+  .madoko .cell-border-right {
+    border-right: 1px solid black;
+  }
+  .madoko thead>tr:first-child>.cell-line,
+  .madoko tbody:first-child>tr:first-child>.cell-line {
+    border-top: 1px solid black;
+    border-bottom: none;
+  }
+  .madoko .cell-line, .madoko .cell-double-line {
+    border-bottom: 1px solid black;
+    border-top: none;
+  }
+  .madoko .cell-double-line {
+    border-top: 1px solid black;
+    padding-top: 1.5px !important;
+  }
+  .madoko .input-mathpre .MathJax_Display {
+    text-align: left !important;
+  }
+  .madoko div.input-mathpre {
+    text-align: left;
+    margin-top: 1.5ex;
+    margin-bottom: 1ex;
+  }
+  .madoko .math-rendering {
+    text-align: left;
+    white-space: pre;
+    color: gray;
+  }
+  .madoko .mathdisplay {
+    text-align: center;
+  }
+  .madoko span.math-rendering {
+    display:inline-block;
+    width:8em;
+    overflow-x:auto;
+    font-size:70%;
+  }
+  .madoko span.math-rendering::-webkit-scrollbar {
+    width:4px;
+  }
+  .madoko .pretty table {
+    border-collapse: collapse;
+  }
+  .madoko .pretty td {
+    padding: 0em;
+  }
+  .madoko .pretty td.empty {
+    min-width: 1.5ex;
+  }
+  .madoko .pretty td.expander {
+    width: 100em;
+  }
+  body.madoko, .madoko .serif {
+    font-family: Cambria,"Times New Roman","Liberation Serif","Times",serif;
+  }
+  .madoko .sans-serif {
+    font-family: "Calibri", "Optima", sans-serif;
+  }
+  .madoko .symbol {
+    font-family: "Segoe UI Symbol", Symbola, serif;
+  }
+  body.madoko {
+    -webkit-text-size-adjust: 100%;       
+    text-rendering: optimizeLegibility;
+  }
+  body.madoko {
+    max-width: 88ex; 
+    margin: 1em auto;
+    padding: 0em 2em;
+  }
+  body.preview.madoko {
+    padding: 0em 1em;
+  }
+  .madoko p {
+    text-align: justify;
+  }
+  .madoko h1, .madoko h2, .madoko h3, .madoko h4 {
+    margin-top: 1.22em;
+    margin-bottom: 1ex;
+  }
+  .madoko h1+p, .madoko h2+p, .madoko h3+p, .madoko h4+p, .madoko h5+p  {
+    margin-top: 1ex;
+  }
+  .madoko h5, .madoko h6 {
+    margin-top: 1ex;
+    font-size: 1em;
+  }
+  .madoko h5 {
+    margin-bottom: 0.5ex;
+  }
+  .madoko h5 + p {
+    margin-top: 0.5ex;
+  }
+  .madoko h6 {
+    margin-bottom: 0pt;
+  }
+  .madoko h6 + p {
+    margin-top: 0pt;
+  }
+  .madoko pre, .madoko code, .madoko kbd, .madoko samp, .madoko tt,
+  .madoko .monospace, .madoko .token-indent, .madoko .reveal pre, .madoko .reveal code, .madoko .email {
+    font-family: Consolas,"Andale Mono WT","Andale Mono",Lucida Console,Monaco,monospace,monospace;
+    font-size: 0.85em;
+  }
+  .madoko pre code, .madoko .token-indent {
+    font-size: 0.95em;
+  }
+  .madoko pre code {
+    font-family: inherit !important;
+  }
+  .madoko ol.linenums li {
+    background-color: white;
+    list-style-type: decimal;
+  }
+  .madoko .remote {
+    background-color: #F0FFF0;
+  }
+  .madoko .remote + * {
+    margin-top: 0pt;
+  }
+  @media print {
+    body.madoko {
+      font-size: 10pt;
+    }
+    @page {
+      margin: 1in 1.5in;
+    }
+  }
+  @media only screen and (max-device-width:1024px) {
+    body.madoko {
+      padding: 0em 0.5em;
+    }
+    .madoko li {
+      text-align: left;
+    }
+  }
+  
+    </style>
+  
+  </head>
+<body class="madoko">
+
+<div class="body madoko" style="line-adjust:0">
+
+<div class="titleblock align-center para-block" style="text-align:center;line-adjust:0">
+<div class="titleheader align-center" style="text-align:center;line-adjust:0">
+<div class="title para-block" style="font-size:xx-large;font-weight:bold;margin-bottom:0.5ex;line-adjust:0">How is a Programmer Like a Pathologist?</div></div>
+<div class="authors align-center" style="text-align:center;width:80%;line-adjust:0"><table class="authorrow columns block" style="margin-top:2ex;width:100%;line-adjust:0">
+<tbody><tr><td class="author column" style="text-align:center;line-adjust:0">
+<div class="authorname" style="font-size:large;line-adjust:0">Gilad Bracha</div></td></tr></tbody></table></div></div>
+<p class="p indent">The answer to the query above is that they both spend much of their time analyzing 
+corpses. Pathologists analyze dead people; programmers analyze dead programs.
+</p>
+<p class="p indent">A live program is dynamic; it changes over time; 
+it is <em class="em-star1">animated</em>. A program is alive when it&#39;s running. When you work on a program in
+ a text editor, it is dead. 
+</p>
+<p class="p indent">A live program has behavior, and that behavior is what we are interested in.
+It is very hard to discern the behavior of an organism on the basis of an autopsy.
+Did dinosaurs care for their young? If only we could look at some live dinosaurs and
+see.
+</p>
+<p class="p indent">Likewise, it is very hard to understand the behavior of a program just by looking
+at its code. You are forced to simulate the behavior in your head. 
+As&nbsp;<a href="https://shalabh.com/programmable-systems/offload-mental-simulation.html" data-linkid="shalabh chaturvedi suggests">Shalabh Chaturvedi suggests</a>,  machines are
+much better at that, and so we should have them do it instead.
+</p>
+<p class="p noindent">I discussed this problem back in 2012/2013.  I proposed that IDEs should always 
+present code in the context
+of live data. Every variable in the program should have a value; you can then
+evaluate code at any point and see how it behaves. I even built a simple prototype 
+(here&#39;s&nbsp;<a href="https://youtu.be/74WqdS_58uY" data-linkid="an old demo">an old demo</a> and&nbsp;<a href="https://youtu.be/Yv7yX27Tx4U" data-linkid="a shorter one">a shorter one</a>). 
+</p>
+<p class="p noindent">Ultimately, I abandoned the prototype. The approach I was taking was too clever.
+It attempted to synthesize sample data automatically. One can do this in various ways, 
+using tests, types, results of prior evaluations, program analysis etc. This involves
+a lot of hard work, which I find distasteful.
+</p>
+<p class="p indent">Recently, I had an inspiration: why not do this the easy way? Below is what you see
+in the latest Newspeak IDE when you click on class <strong class="strong-star2">BankAccount</strong>.
+</p>
+<p class="p indent"><em class="em-low1">The IDE runs in the browser; the view below is live, not a screenshot. You can play
+with it.</em>
+</p><div class="classPresenter" className = "BankAccount"> </div>
+
+<p class="p noindent">What you get is an object inspector on <em class="em-star1">an instance</em> of <strong class="strong-star2">BankAccount</strong>. The code of
+the class is embedded therein. Now you can evaluate expressions in the code; <strong class="strong-star2">self</strong> is
+bound to the instance being inspected; method parameters have plausible bindings as well.
+</p>
+<p class="p indent">To demonstrate this, open the <strong class="strong-star2">withdraw:</strong> method by clicking on it. Select an expression in the method body and use the <strong class="strong-star2">Evaluate Selection</strong> button; the
+result will display just below the method.
+</p>
+<p class="p indent"> <em class="em-low1">Caveats galore: not everything works yet - for example, the <strong class="strong-star2">Start Live Evaluation</strong> 
+ button 
+ only works in the object inspector, not for methods. </em>
+</p>
+<p class="p indent">If you press the <em class="em-low1">Debug</em> button above a method, you enter a debugger, stopped at the
+start of the method.
+</p>
+<p class="p indent"><em class="em-low1"> You can use the navigation buttons at the top of the embedded IDE to go back
+from the debugger to the object inspector. </em>
+</p>
+<p class="p indent">What makes this work, and moreover, what makes it easy? 
+Rather than synthesizing exemplars automatically, we ask
+the user to tell us how to create them.
+At the top of the class you can see its factory method, <strong class="strong-star2">balance:</strong> 
+(note the colon at the end). If you click on it you&#39;ll see a  a comment:
+</p>
+<p class="p indent"><em class="em-low1">(* :exemplar: BankAccount balance: 100 *)</em>
+</p>
+<p class="p indent">This is a <em class="em-star1">metadata comment</em>. It is distinguished from an ordinary comment by the
+fact that it begins with a metadata tag, which is delimited by colons. Here
+the tag is <em class="em-star1">:exemplar:</em>. The tag identifies a <em class="em-star1">metadata processor</em> that looks at the
+rest of the comment and decides what to do with it. In our case, the metadata
+processor is the IDE, and it assumes the remainder of the comment is an invocation
+of the classes&#39; factory method, which will yield a sample instance of the class, 
+an <em class="em-star1">exemplar</em>.
+</p>
+<p class="p indent"><em class="em-low1">I got the idea when looking at&nbsp;<a href="https://gtoolkit.com/" data-linkid="tudor girba&#39;s fabulous glamorous toolkit">Tudor Girba&#39;s fabulous Glamorous Toolkit</a> (aka GT). 
+I noticed their extensive
+use of pragmas, which are basically a form of metadata. 
+GT doesn&#39;t use metadata for this specific purpose - at least not yet; but they could 
+probably make it work in short order.
+</em>
+</p>
+<p class="p noindent">There is a question of what scope to evaluate the expression in; the IDE uses its
+namespace for top level classes (since Newspeak has no global scope). For nested
+classes, it uses the scope of the exemplar of the enclosing class.
+</p>
+<p class="p indent">A similar trick works for methods. The exemplar metadata is a sample method
+invocation, which is sent to the exemplar of the class.  You can have multiple
+exemplar metadata comments, and you can choose which one to use.
+</p>
+<p class="p indent">Obviously, if a method does not take parameters, one doesn&#39;t need to provide metadata. 
+If we do require metadata but none is provided, or if evaluating the metadata fails, 
+we revert back
+to showing dead code.  
+</p>
+<p class="p indent">One criticism of this approach is that it may discourage people from ensuring that
+the code works for all possible values, and not just the exemplars.
+I&#39;d argue that exemplar based IDEs are complementary to other techniques, such as 
+testing and typechecking. You can use multiple exemplars, and that can be used to 
+ascertain code coverage. One can infer types based on exemplars; 
+this is very close to Hernan Wilkinson&#39;s excellent work on
+<a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;cad=rja&amp;uact=8&amp;ved=2ahUKEwjFxfzav5PxAhUKGqYKHQuUBGIQtwIwAXoECAIQAw&amp;url=https%3A%2F%2Fwww.youtube.com%2Fwatch%3Fv%3DnFaB07q-7MI&amp;usg=AOvVaw3ptkC9QlVuWmZ11BG-TkId" data-linkid="live typing">Live typing</a>. Furthermore, nothing stops you from doing full formal 
+verification if that&#39;s your thing.
+</p>
+<p class="p noindent">The obvious downside here is that you need to write the metadata. 
+That isn&#39;t very hard if you do this as you write your code, but when you have an existing
+ code base, it&#39;s a bit tiresome and a lot of work. 
+</p>
+<p class="p indent"> Of course, you can apply various
+ techniques to generate the metadata for you as I suggested above. 
+ Once you have some live methods, it gets easier;
+ you can see what methods they send, and use the calls to create live data
+ for the methods being invoked, recursively. I haven&#39;t yet pursued these options;
+ the tooling is in its infancy right now.
+</p>
+<p class="p indent">There&#39;s a lot more one
+can do with this information. For example,
+we don&#39;t support name completion - but obviously, that is easy to do once you have
+live exemplar data.
+</p>
+<p class="p indent"><em class="em-low1">Interesting to note that static types are not really needed for name completion in
+this scenario.</em>
+</p>
+<p class="p indent">In fact, we can use the exemplar information in the opposite direction, to generate tests,
+or type information.
+</p>
+<p class="p indent">The current version still needs a lot of polish in terms of UI.
+I hope that over time, we&#39;ll
+gain more experience and fine tune the interface accordingly.
+</p>
+<p class="p indent">Nevertheless, the first step, as I&#39;ve argued many times, is to choose life.
+</p>
+<div class="logomadoko" style="display:block;text-align:right;font-size:xx-small;margin-top:4em">Created with&nbsp;<a href="https://www.madoko.net">Madoko.net</a>.</div><span data-line=""></span></div>
+     <script type="text/javascript">
+      function scheduleTurn(timeout) {
+        if (timeout >= 0) {
+          setTimeout(function() {
+            var timeout = Module._handle_message();
+            scheduleTurn(timeout);
+          }, timeout);
+        }
+      }
+
+      var Module = {
+        noInitialRun: true,
+        noExitRuntime: true,
+        onRuntimeInitialized: function() {
+          var url = new URLSearchParams(window.location.search);
+          var request = new XMLHttpRequest();
+          request.open("GET", url.get("snapshot"), true);
+          request.responseType = "arraybuffer";
+          request.onload = function (event) {
+            var jsBuffer = new Uint8Array(request.response);
+            var cBuffer = _malloc(jsBuffer.length);
+            writeArrayToMemory(jsBuffer, cBuffer);
+            Module._load_snapshot(cBuffer, jsBuffer.length);
+            _free(cBuffer);
+            scheduleTurn(0);
+          };
+          request.send();
+        },
+        print: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.log(text);
+
+          var pre = document.createElement("pre");
+          pre.textContent = text;
+          pre.style.color = "black";
+          document.body.appendChild(pre);
+          window.scrollTo(0, document.body.scrollHeight);
+        },
+        printErr: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.error(text);
+
+          var pre = document.createElement("pre");
+          pre.textContent = text;
+          pre.style.color = "red";
+          document.body.appendChild(pre);
+          window.scrollTo(0, document.body.scrollHeight);
+        },
+        setStatus: function(text) {
+          console.log(text);
+        },
+      };
+    </script>
+</body>
+<script type="text/javascript"
+src="CodeMirror/lib/codemirror.js"></script>
+<link rel="stylesheet" href="CodeMirror/lib/codemirror.css"></link>
+<script type="text/javascript"
+src="CodeMirror/addon/display/autorefresh.js"></script>
+
+    <script async type="text/javascript" src="primordialsoup.js"></script>
+
+</html>
