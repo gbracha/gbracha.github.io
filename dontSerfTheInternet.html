@@ -1,0 +1,52 @@
+<div class = "ampleforthDocumentClass" name = "dontSerfTheInternet" classBody = "() (
+) : (
+)
+" </div><div class = "ampleforthDocumentBody"><body><div class="self_ampleforth" contenteditable="false" style="border: 2px solid blue; resize: horizontal; overflow: auto; width: 993px;" onkeyup="updateRawHTML()"> <h2>Don't Serf the Internet</h2><div><br></div><div>The title is not a typo, of course, just a puny pun. Digital serfdom is a state that people are increasingly consigned to.</div><div>The digital environment is increasingly important to most people. How much control do we have over it?</div><div><br></div><div>Very little, in most cases. And less and less over time. The power to control our digital surroundings is increasingly in the hands of someone else.</div><div>It might be Google, or Apple, or Microsoft, or Meta, or Amazon or others I've overlooked. Whoever they are, they control our operating systems, our tools, our data.</div><div>In many cases, we cede this control freely, in exchange for convenience. In other cases, we do it because there is no real alternative (where do I get a phone I truly control?).</div><div><br></div><div>This is ungood. Having other people decide what is good for you is usually much better for them than for you. People want their surroundings to be comfortable and pleasant.</div><div>They may even go so far as to wish their surroundings were <i><b>beautiful</b></i>. And no can decide that for them.&nbsp; <b>Agency</b>, the ability to choose and influence your environment, is the essence of freedom. This is as true of the digital world as it is of the physical one. More and more, the two mix, be it through the increasingly pervasive use of mobile devices, social media or thru virtual or augmented reality.</div><div><br></div><div>One response to this situation, in the domain of operating systems, is to buy a Linux machine. Linux fans will point out that they have access to the OS source code,</div><div>and can, in theory, make it do what they want. However, theory and practice are the same only in theory; practice is a different matter. Understanding Linux, let alone changing it, is unspeakably complex.&nbsp;&nbsp;</div><div><br></div><div><i>You may think that's all fine, but this blog doesn't deal with masochism.</i></div><div><br></div><div>The same is true of other major open source components of our computing world, such as web browsing infrastructure like Chromium.</div><div>Nevertheless, these folks are on to something.&nbsp; You should be able to access and change the OS source code - but&nbsp; you should be able to do so much more easily, safely and reliably. If it's mind-bendingly complex, you don't&nbsp; really control it, even if it is open source.</div><div><div><br></div><div>The idea of the end user having control over their digital space was fundamental to the Smalltalk vision, and even earlier, in Alan Kay's writing going back to the late 1960s.</div></div><div>Imagine if your OS was written in a high level language: say, some incarnation of Smalltalk or Lisp. It's been done before, and it's increasingly important to do it again.</div><div>While some aspects of an operating system are inherently tricky and complex, many of the higher levels are less sensitive.&nbsp;</div><div><br></div><div>I should note, as I have many times before, that the solution is not a plug-in architecture, or a menu of possible options and configurations, however rich.&nbsp;</div><div>There will always be things that the designers of such a system did not foresee.</div><div><br></div><div>Of course, it's not just the OS, but all the software you interact with. Your editors, your email and messaging clients, spreadsheets, calendars and so on.&nbsp; In a <a contenteditable="false" href="https://blog.bracha.org/Ampleforth-Live22/out/primordialsoup.html?snapshot=Live22Submission.vfuel">recent workshop paper</a>, I argue that there isn't much difference between all these, and if they are done right, they are all small variations of the same underlying substrate.</div><div><br></div><div>&nbsp;There's also the small matter of your data. You need to control the data so you can always get hold of it, so it isn't thrown away or corrupted, and so you aren't spied upon.</div><div><br></div><div>On the data front there are, happily, signs that things might change. The idea of local-first software, which <a contenteditable="false" href="https://gbracha.blogspot.com/2022/04/bitrot-revisited-local-first-software.html">I've commented on before</a>, is a big part of the solution. Local-first emphasizes the need for you to control your data, but doesn't emphasize your control over code. Sure, you can prevent it changing under your feet, or disappearing altogether, but that alone doesn't imply that you really control it. That is one reason it is important that we solve this in a way that handles both code and data, together. I've always advocated for the view that code is data (per the Lisp and Smalltalk traditions) and that synchronization solutions should reflect that. There are other reasons: it means you can update code over the network if you want to, and it means that code and data formats can co-evolve.</div><div><br></div><div><i>Advocates of local-first often also argue that being able to stick the old version of the software is an advantage. Yet others may upgrade, and your old version may not be able to cope with new data they create. How would you collaborate with them? You would all have to agree on a version - either you upgrade or they downgrade, or some of you keep multiple versions depending who you work with. This the kind of complexity we were trying to avoid in the first place.&nbsp;</i></div><div><i><br></i></div><div><i>On the other hand, what happens to your modifications when the authors of the modified code update it? You need to reconcile, and that may not be easy; but at least you have the possibility. Maybe your change&nbsp;</i><i>eventually gets added to the main system. In the end, that is an open source governance issue.</i></div><div><br></div><div>What does such a system look like? It looks like a system where almost the entire stack, from the OS up, is written in a clean, uniform, high level language that treats code and data as first class constructs and allows you to change them easily, on the fly. A dynamic, reflective language (it can and should be optionally typed, but that is a minor point).&nbsp;</div><div><br></div><div>At the same time, the system needs to be secure by default. Capability-based is my bet. And it needs to run on a wide variety of hardware - desktops, laptops, tablets, phones, watches. Yet it also needs to be able to run on top of, and interoperate with, other operating systems so it isn't a walled garden. The web is the best option for the latter kind of portability at the moment. The system supports synchronization of code and both offline and online: in other words, both synchronous and asynchronous reconciliation.</div><div><br></div><div>Is there any chance of building such a system in today's world? Addressing this requires considerable resources. On the other hand, it requires a lot less resources than you might think. Certainly less resources than are being squandered on building the mainstream versions of the software stack - I'd say orders of magnitude less.&nbsp; Still, these resources have to come from somewhere.&nbsp;</div><div><br></div><div><i>One difficulty is that it's not clear what the economic incentives to invest resources in such a system are.&nbsp;</i></div><div><br></div><div>In the end, people have to ask themselves if they want the lazy, mindless convenience of digital serfdom or whether they want to support something better.&nbsp; What do you think? Can we compute freely?</div><div><br></div></div></body></div>   <script type="text/javascript">
+      function scheduleTurn(timeout) {
+        if (timeout >= 0) {
+          setTimeout(function() {
+            var timeout = Module._handle_message();
+            scheduleTurn(timeout);
+          }, timeout);
+        }
+      }
+
+      var Module = {
+        noInitialRun: true,
+        noExitRuntime: true,
+        onRuntimeInitialized: function() {
+          var url = new URLSearchParams(window.location.search);
+          var request = new XMLHttpRequest();
+          request.open("GET", url.get("snapshot"), true);
+          request.responseType = "arraybuffer";
+          request.onload = function (event) {
+            var jsBuffer = new Uint8Array(request.response);
+            var cBuffer = _malloc(jsBuffer.length);
+            writeArrayToMemory(jsBuffer, cBuffer);
+            Module._load_snapshot(cBuffer, jsBuffer.length);
+            _free(cBuffer);
+            scheduleTurn(0);
+          };
+          request.send();
+        },
+        print: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.log(text);
+        },
+        printErr: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.error(text);
+        },
+        setStatus: function(text) {
+          console.log(text);
+        },
+      };
+    </script>
+<script async type="text/javascript" src="primordialsoup.js"></script>
+    <script src="CodeMirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="CodeMirror/lib/codemirror.css"></link>
+    <script src="CodeMirror/addon/display/autorefresh.js"></script>
