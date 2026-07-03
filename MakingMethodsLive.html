@@ -1,0 +1,57 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>MakingMethodsLive</title></head><body data-ampleforth-doc="MakingMethodsLive"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on April 4th, 2013</i></h3></div>
+    <h1>Making Methods Live</h1>
+<br>
+<div>
+<span>A few months ago, <a href="http://gbracha.blogspot.com/2012/11/debug-mode-is-only-mode.html" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>I suggested that IDEs should ensure that code is always “live”</span></a> in the sense that it is associated with runtime data so that any part of the code can be immediately executed. I proposed that tightly integrating editors and debuggers would be reasonable way to pursue the idea.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>I’ve put together a prototype, an extension of the Newspeak IDE.&nbsp; I demonstrated an early version at the <a href="http://program-transformation.org/WGLD/" contenteditable="false" target="_blank" rel="noopener noreferrer">WGLD</a> meeting in <a href="http://program-transformation.org/WGLD/Austin2012" contenteditable="false" target="_blank" rel="noopener noreferrer">December</a>. Since then there have been some improvements, though a lot of work remains to be done. Nevertheless, the system is already usable, at least by an experienced Newspeaker.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>In Newspeak, one typically edits individual methods in a class browser, as opposed to monolithic files. The prototype modifies the method browsers to present the method along with a view of a live stack frame. This is essentially the same view one sees in the debugger, where a series of activations are available; <a href="http://gbracha.blogspot.com/2008/07/debugging-visual-metaphors.html" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>each such view shows a single stack frame along with the corresponding code</span></a>.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>I plan to show the latest version at the upcoming Live 2013 workshop. I’ve prepared a <a href="https://www.youtube.com/watch?v=74WqdS_58uY&amp;feature=youtu.be" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>short video</span></a> illustrating some of the capabilities of the system.&nbsp; The video is cut short because of time limitations of the workshop, but it shows something roughly similar to one of Brett Victor’s demos of editing and interacting with general purpose code.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>It is possible to select any subexpression in the code and evaluate it. In Smalltalk, it is customary to insert code snippets that illustrate how to use an API inside comments. This is possible here as well, but unlike Smalltalk, the snippets can make use of local variables and instance methods. It is also possible to step through code as in a debugger (in the interest of full disclosure, that bit is a tad flakey at the moment; this is very much a work in progress).</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>There are many things that need improvement, some of which you can see in the demo. Combining the debugger and method editor brings challenges. If you hit return, is that just a newline, or do you evaluate the code, and/or save it? In a classic REPL, you are not editing permanent code and so neither formatting nor saving are a concern, and each return evaluates the current line and moves to a new one. In contrast, in an editor, return is just formatting, and saving is a distinct operation. Our current approach is to keep all three operations distinct. However, it would be convenient to have keyboard shortcuts for evaluation and for evaluate and return. That would make the kind of interaction shown in the demo smoother. So would maintaining the selection across evaluations.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>There are also various nice features that aren’t illustrated in the demo due to lack of time. When an evaluation prints out its result the printout is a link to an object inspector on the result, where further evaluation can take place in the context of that object.&nbsp; This is a feature inherited from the existing Newspeak object inspectors.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>It is important to understand that you can do all this on any method of any class, whether you view it in a class browser, or in a list of senders or implementors etc. The goal of this effort is to completely eradicate any code view that does not support such live interaction. There are still some parts of the system where this has not yet been done, but a few more weekends and this will be addressed.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>If you get the latest <a href="http://www.mirandabanda.org/files/Cog/VM/VM.r2714/" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>Newspeak VM</span></a> and the <a href="https://bitbucket.org/newspeaklanguage/newspeak/downloads/nsboot-2013-03-28.zip" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>experimental image</span></a> you can play with the extension I’ve described, though you need to be comfortable with Newspeak. Otherwise, you will probably provoke some of the many bugs in the prototype.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The goal is to get this into the production Newspeak IDE in the not too distant future. There is a good deal of work before we get there, and huge potential for improvement. Issues include efficiency (each method browser is potentially a thread) and the quality of the exemplar data displayed. There are interesting ways to improve the quality, including bidirectional linkage with unit tests and type annotations. There is probably scope for a masters of PhD thesis depending how far one wants to take it all.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>While it is a lot easier to do this sort of work in the Newspeak environment,&nbsp; the lessons learned pertain to other systems as well.&nbsp;</span></div>
+<div>
+<span></span><br></div>
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

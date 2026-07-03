@@ -1,0 +1,234 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>ReifiedGenerics</title></head><body data-ampleforth-doc="ReifiedGenerics"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on October 6th, 2018</i></h3></div>
+    <h1>Reified Generics: The Search for the Cure</h1>
+<div>
+<span>Many have argued that run time access to generic type information is very important. A very bitter debate about this ensued when we added generics to Java. The topic recurs whenever one designs a statically typed object oriented language. Should one reify generic types, or erase them? Java chose erasure, .Net and Dart chose reification, and all three solutions are in my mind unsatisfactory for various reasons, including but not limited to the handling of erasure or its presumed alter ego, reification. </span><br>
+<span><div>
+<span><br></span>
+<span><b>Pedantic note 1:</b> Throughout this post, I will use the terms erasure and reification as shorthand for erasure and reification of generic type information.</span><br>
+<span><br></span>
+<span><span>In a well designed object-oriented language, erasure and reification are not contradictory at all.  This statement might bear some explanation, so here we go ...</span></span><br>
+<div>
+<span><br></span></div>
+</div>
+<div>
+<span>A while back, I discussed <a href="https://gbracha.blogspot.com/2014/09/a-domain-of-shadows.html" contenteditable="false" target="_blank" rel="noopener noreferrer">the problem of shadow language constructs</a>. I gave examples of shadow constructs such as Standard ML modules, traditional imports etc. Here is another: reified generics.</span></div>
+<br><div>
+<span>Generics introduce a form a shadow parameterization. Programming languages all have a perfectly good mechanism for declaring parameterized constructs and invoking them. You may have heard of it - it is widely known by the name <i>function</i>, and it goes back to the 17th century.</span><br>
+<span><br></span>
+<span><b>Pedantic note 2:</b> Yes, programming language functions are usually not mathematical functions. The parameterization mechanism is however, essentially the same.</span><br>
+<span><br></span>
+<span>Generics introduce a different form of formal and actual parameters. There is a purpose to that: static analysis. However, when languages try to provide run time access to these parameters (i.e., reification of generics), we are creating a lobotomized twin of the existing runtime parameter passing system. A new, redundant, confusing and costly set of mechanisms is added to the run time in order to declare, pass, store and access these parameters. </span><br>
+<br></div>
+<div>
+<span>The first guiding principle of any solution is to avoid shadow constructs. We already have parameterization support, let's use it. </span><span> </span><br>
+<span><br></span>
+<br>
+<div>
+<span>Generics are functions from types to types, typically classes to classes. </span><br>
+<span><br></span>
+<span><b>Pedantic note 3:</b><span>  If your language is prototype based, generics might be considered functions between prototypes. If your language has primitive types - well, you're up the creek without a paddle anyway. <a href="https://gbracha.blogspot.com/2009/05/original-sin.html" contenteditable="false" target="_blank" rel="noopener noreferrer">There is no justification for primitive types in an object oriented language</a>.</span></span><br>
+<span><br></span>
+<span>If classes are expressions, we can write reified generics as ordinary functions. Here's some sample pseudo-code. It's given in a quasi-standard syntax, so I don't waste time explaining Newspeak syntax.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<i><b>public var</b></i><i> List = (</i><i>function</i><i>(</i><i>T)</i><i> </i><i>{</i><i> &nbsp;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;</i><i>return</i><i> </i><i>class</i><i> {</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;    </i><i><b>var</b></i><i> </i><i>hd, tl</i><i>;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class</i><i> Link {</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public</i><i> datum;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public</i><i> next;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i><i>public</i><i> </i><i>elementType()</i><i> { </i><i>return</i><i> T}</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public</i><i> add(e</i><i>)</i><i> </i><i>{</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i><i>var</i><i> tmp </i><i>:= Link new.</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tmp.datum := e;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tmp.next := hd;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tl := hd;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hd := tmp;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i><i>return</i><i> e;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</i></div>
+<div>
+<i> &nbsp;}</i></div>
+<div>
+<span></span></div>
+<div>
+<i>}).memoize();</i></div>
+<div>
+<i><br></i></div>
+<div>
+<i><span>&nbsp;</span><span>Here's a summary of what the above means:</span></i></div>
+
+<ul>
+<li><span><span>We declare a variable named <i>List</i>, initialized to a closure.</span></span></li>
+<li><span><span>The closure takes a class <i>T</i> as a parameter and returns a class as its result.</span></span></li>
+<li><span><span>The result class is specified via a <i><b>class expression</b></i>, which implements a linked list.</span></span></li>
+<li><span><span>The class expression includes a nested class declaration, <i>Link</i>.</span></span></li>
+<li><span><span>The method <i>memoize()</i> is called on the closure to, well, memoize it. <i>Memoize()</i> returns a memoized version of its receiver.</span></span></li>
+</ul>
+<div>
+<span><span>Each call to <i>List()</i> returns a list class specialized to the actual parameter of <i>List()</i>.  We can create a list of integers by saying </span></span></div>
+<div>
+<span><span><br></span></span></div>
+<div>
+<span><span><i><b>var</b> lst := List(Integer).new();</i></span></span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>and we can dynamically check what type of elements <i>lst</i> holds</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><i>lst.elementType(); // returns Integer, the class object reifying the integer type.</i></span></div>
+<div>
+<br></div>
+<div>
+<span>The reified element type is shared among all instances of a given list class, because it is stored in the closure surrounding the class. We avoid duplicating classes with the same parameters - this is just function memoization (and I assume a <i>memoize()</i> method on closures for this purpose). </span><span>All this works independent of any static types. We are just using standard runtime mechanisms like closures, memoized functions, objects representing classes and yes, class expressions. Smalltalk had these, in essence, over 40 years ago.</span><br>
+<span><br></span>
+<span>What if I don't have class expressions? Well, don't you know that everything should be an expression? Besides, this works fine if you have the ability to define classes reflectively like Smalltalk, or </span><span>have properly defined nested classes like Newspeak, </span><span> though it may be a bit more verbose and require more library support to be palatable.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Now let's add types. In the code below, <b>t</b></span><span><b>ype annotations are completely optional, and have absolutely no runtime effect</b>. They are shown in </span><span>blue</span><span>. </span></div>
+<div>
+<span><br></span></div>
+<div>
+<i><b>public var</b></i><i> List = (</i><i>function</i><i>(</i><i>T</i><i> : Class</i><i>)</i><i> </i><i>{</i><i> &nbsp;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;</i><i>return</i><i> </i><i>class</i><i> {</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;    <b>var</b> </i><i>hd, tl</i><i> : Link</i><i>;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;class</i><i> Link {</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public</i><i> datum </i><span><i>: </i><i>T</i></span><i>;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public</i><i> next :</i><i><span> Link</span></i><i>;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i><i>public</i><i> </i><i>elementType() </i><i>: Class</i><i> { </i><i>return</i><i> T}</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;public</i><i> add:(e </i><i>: T</i><i>)</i><i> : T</i><i> {</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i><i>var</i><i> tmp: </i><i>Link</i><i> := Link new.</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tmp.datum := e;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tmp.next := hd;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tl := hd;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hd := tmp;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</i><i>return</i><i> e;</i></div>
+<div>
+<i> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</i></div>
+<div>
+<i> &nbsp;}</i></div>
+<div>
+<span></span></div>
+<div>
+<i>}).memoize();</i></div>
+<div>
+<span><br></span></div>
+<div>
+<span>You may notice one odd thing - we use the name of the formal parameter to the closure, </span><i>T</i><span>, as a type. This is justified by the following rule.</span></div>
+<div>
+<br></div>
+<div>
+<span><b>Rule 1:</b> In any method or closure <i>m</i>, a formal parameter </span><i>T</i><span> of type </span><i><span>Class</span></i><span> (or any subtype thereof) implicitly defines a type variable </span><i><span>T</span> </i><span>which is in scope in type expressions from the point </span><i>T</i><span> is declared to the end of the method/closure</span><span>. </span></div>
+<div>
+<br></div>
+<div>
+<span>Next, we need to be able to use the information given by the declaration of <i>List</i> when we write types like </span><span><i><span>List[Integer]</span></i></span><span>. We use the following rule.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><b>Rule 2:</b></span><span> If </span><i>e</i><span> is an expression of function type with parameter(s) of type </span><i><span>Class</span></i><span> and return type </span><i>Class</i><span>, </span><i>e</i><span>'s name</span><span> can be used inside a type expression as a type function;  an invocation of the type function <i>e[T1, ..., Tn]</i> denotes the type of the instances of the class returned by the value expression </span></div>
+<div>
+<i>e(T1, ..., Tn)</i><span>. </span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>We can then write, and typecheck </span></div>
+<div>
+<span><br></span></div>
+<div>
+<i><b>var</b> lst </i><span><i>:</i><i> </i></span><i>List[Integer] </i><i>:= List(Integer).new();</i></div>
+<div>
+<i><span><b>var</b> i </span><span>: Integer</span><span> := lst.add(3) + 4;</span></i></div>
+<div>
+<br></div>
+<div>
+<span>Oh, and we can still do this: </span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><i>lst.elementType(); // returns Integer, the class object reifying the integer type.</i></span></div>
+<div>
+<span><i><br></i></span></div>
+<div>
+<span><span>Similarly, if you wish to create new instances of the incoming type parameters, you should be able to do that in the above regime - though you will have to confront the fact that different subtypes may have different constructors and plan around that explicitly - say, by defining a common construction interface for these types. </span></span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The beauty of this scheme is that no runtimes were harmed in the making of this reified generic type system. The type system is completely optional. And this is my point: reification was there all along. The typechecker simply needs to understand this fact and leverage it.  The basic approach would work with any language with types reified as values, regardless of whether it has generics. </span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Interestingly, we now have reification of generics, and erasure, at the same time. The two are not in conflict. Reification is supported by the normal runtime mechanisms, independent of types, which are optional and always erased, carrying no runtime cost or semantics.</span></div>
+<div>
+<br></div>
+</div>
+</span><br>
+<div>
+<span>Reification of generics is now a choice for library implementers. If they think it is worthwhile to pay the costs, so that, for example, someone can cheaply test if a collection is a collection of integers or a collection of strings, they are free to do so. </span><br>
+<span><br></span>
+<span><span>If they don't want to pay a price for reification but still want to typecheck generics, they can do that too. Nothing prevents one from explicitly declaring type parameters (as opposed to the implicit ones derived from the class-valued value parameters used for reification).</span></span></div>
+<br>
+<div>
+<i><b>Tangent, TL; DR:</b> Now is the time to mention that traditional reification of generics - that is, runtime support for a shadow parameterization mechanism - is a disaster. It hurts performance in both space and time; Just ask the brave VM engineers who struggled with these issues on the Dart VM. Mitigating that introduces enormous complexity into the runtime and requires a huge effort, which would be better spent doing something good and useful instead.</i></div>
+<br>
+<div>
+<i>In systems designed to support multiple programming languages, reification brings a different problem. All languages must deal with the complexity of reification; worse they must conform to the expectations of the reified generic type system of the "master language" (C# or Java, for example). </i></div>
+<br>
+<div>
+<i>Consider .Net, the poster child of generic reification. Originally, .Net was intended to be a multi-language system, but dynamic language support there has suffered, in no small part due to reification. Visual Basic was a huge success until .Net came along and made it conform to C#. And what Iron Ruby/Python programmer ever enjoyed being forced to feed type arguments (whatever those might be) into a collection they are creating? </i></div>
+<br>
+<div>
+<i>In contrast, the JVM was conceived as a monolingual system. Sun management deluded themselves that Java was the ultimate programming language (though yours truly did try to hint, ever so gently, that further progress in PL was at least conceivable). And yet, the JVM has become home to a wide variety of languages. This is due to multiple factors, invokedynamic not the least among them. But erasure plays a crucial and underappreciated role here as well. If not for erasure, the JVM would have the above-mentioned problems wrt dynamic languages, just like .Net.</i></div>
+<span><br></span>
+<div>
+<span>Of course, generics have many issues that are independent of reification. The great difficulties with generics come up when they interact with subtyping. All the problems of variance, as well as inference, are rooted in that interaction. If you are happy with any existing approach, you should be able to incorporate it into the above reification strategy - but I am not aware of any pre-existing generic design that I would consider satisfactory. </span></div>
+<br>
+<div>
+<span>I think I may now have a plausible approach to the typing issues, but the margins of this blog are too narrow to contain it. &nbsp;A follow up post will either make it all clear, or confess that it hasn't worked out. The above comments on reification stand on their own in any case.</span></div>
+<div>
+<span><br></span></div>
+</div>
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

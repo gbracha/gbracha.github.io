@@ -1,0 +1,119 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>InheritingClass</title></head><body data-ampleforth-doc="InheritingClass"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on January 19th, 2013</i></h3></div>
+    <h1>Inheriting Class</h1>
+<br>
+<div>
+<span>I wanted to share a nice example of class hierarchy inheritance. Regular readers of this blog are no doubt familiar with the notion of virtual classes and class hierarchy inheritance. For those who aren’t, I’ll recap. Class hierarchy inheritance is exactly what it sounds like: the ability to inherit from an entire class hierarchy rather than a single class.&nbsp; &nbsp;</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>Nested classes, as originally conceived in Beta, were treated as dynamically bound properties of instances, just like methods. If you do that, overriding classes (aka virtual classes) is an automatic consequence of nested classes.&nbsp; If you miss this crucial point, you can easily end up with nested-classes design that has a great deal of complexity and almost no benefits (cf. Java).</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>The notion of class hierarchy inheritance has been around for many years, but has not yet caught on in the mainstream.&nbsp; It is supported in a few languages: Beta, gBeta, <a href="http://newspeaklanguage.org/" contenteditable="false" target="_blank" rel="noopener noreferrer">Newspeak</a> and several research projects.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span><b><i>Tangent</i></b><i>:&nbsp; Apologies to any languages I’ve not explicitly mentioned. This is a blog, not a scientific paper, and exhaustive citations should not be expected.</i></span></div>
+<div>
+<span><i></i></span><br></div>
+<div>
+<span>The research on this topic has too often been focused on typechecking, under the rubric of family polymorphism.&nbsp; Fortunately, one can make excellent use of class hierarchy inheritance without worrying about complicated type systems.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><b><i>Note</i></b><i>:&nbsp;&nbsp;Virtual classes are distinct from virtual types.</i></span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>To be honest, while class nesting has proven to be useful on a daily basis, class hierarchy inheritance occurs pretty rarely. The biggest advantage of late binding nested classes is not class hierarchy inheritance, but polymorphism over classes (acting as instance factories, ergo constructors), which promotes modularity.&nbsp; &nbsp;</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>Nevertheless, class hierarchy inheritance can be very useful at times. And since it comes for free, we might as well use it.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>A classic example in the research literature is extending a class </span><span><i>Graph</i></span><span> that has nested classes like&nbsp; </span><span><i>Node</i></span><span> and </span><span><i>Edge</i></span><span>. In Newspeak this would look roughly like this:</span></div>
+<div>
+<span><i><b>class</b> Graph () (</i></span></div>
+<div>
+<span><i>&nbsp;&nbsp; <b>class</b> Node ...</i></span></div>
+<div>
+<span><i>&nbsp;&nbsp; <b>class</b> Edge ...</i></span></div>
+<div>
+<span><i>)</i></span></div>
+<div>
+<br><span></span></div>
+<div>
+<span>One can introduce a new subclass of</span><span> <i>Graph</i></span><span>,&nbsp; </span><span><i>WeightedGraph</i></span><span>, modifying </span><span><i>Edge</i></span><span> to hold the weight etc.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span><i><b>class</b> WeightedGraph = Graph ()(</i></span></div>
+<div>
+<span><i>&nbsp;&nbsp; <b>class</b> Edge = <b>super</b> Edge ( | weight  ::= 0. | ) ()</i></span></div>
+<div>
+<span><i>)</i></span></div>
+<div>
+<span><i><br></i></span></div>
+<div>
+<span>In </span><span><i>WeightedGraph</i></span><span>, the class </span><span><i>Edge</i></span><span> inherits from the class </span><span><i>Edge</i></span><span> in the superclass </span><span><i>Graph</i></span><span>.&nbsp; </span><span><i>WeightedGraph</i></span><span>’s </span><span><i>Edge</i></span><span> adds a slot (aka field), </span><span>weight</span><span>, initially set to zero.&nbsp; Overriding of classes works just like overriding methods, so all the code that </span><span><i>WeightedGraph</i></span><span> inherited from </span><span><i>Graph</i></span><span> continues to work, except all uses of </span><span><i>Edge</i></span><span> refer to the weighted subclass.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>In this post, I wanted to mention another nice example - one that arose in practice. Some former colleagues had implemented an external DSL on top of Newspeak, and naturally wanted to provide the nice IDE experience of Newspeak for their DSL as well. In particular, the debugger needed to support the DSL.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>For the most part, the debugger is independent of the exact source language it is displaying. The system picks up the source code for each executing method and highlights the current call. However, difficulties arise because some methods created by the DSL implementation are synthetic. At run time, these methods have corresponding stack frames which should never be displayed. We need a small tweak to the debugger UI, so that these synthetic frames are filtered out.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>The Newspeak debugger UI is implemented via a Newspeak module (a top level class) that contains classes responsible for the UI of the debugger, which in turn handles the UI of individual stack frames and of a stack as a whole. The debugger uses the Hopscotch UI framework; I’ll summarize salient characteristics here. Hopscotch applications consist of a <i>presenter</i> (the view of MVC), a <i>subject</i> of the presentation (roughly what some refer to as a ViewModel in MVVM) and <i>model</i> (a name everyone agrees on).&nbsp; And so, our UI includes a </span><span><i>ThreadPresenter</i></span><span> and a </span><span><i>ThreadSubject</i></span><span> (whose model is the underlying thread) and a&nbsp; number of </span><span><i>ActivationPresenter</i></span><span>s and </span><span><i>ActivationSubject</i></span><span>s (whose model is the context object representing an individual stackframe). The presenters and subjects listed above are all declared within the </span><span><i>Debugger</i></span><span> class, which is nested in the top-level class (aka module definition) </span><span><i>Debugging</i></span><span>.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>All we need then, is a slight change to </span><span><i>ThreadSubject</i></span><span> so it knows how to filter out the synthetic frames from the list of frames.&nbsp; One might be able to engineer this in a more conventional setting by subclassing </span><span><i>ThreadSubject</i></span><span> and relying on dependency injection to weave the new subclass into the existing framework - assuming we had the foresight and stamina to use a DI framework in the first place. We’d also need to rebuild our system with two copies of the debugger code, and in general be in for a world of pain.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>Fortunately,&nbsp; the Newspeak IDE is written in Newspeak and not in a mainstream language, so these situations are handled easily.&nbsp; Dependencies that are external to a module are always explicit, and internal ones can always be overridden via inheritance.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>So you subclass the </span><span><i>Debugging</i></span><span> module and override the&nbsp;</span><span><i>ThreadSubject</i></span><span>&nbsp;class so that it filters its list of activations.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span><i><b>class</b> FilteredDebugging = Debugging () (</i></span></div>
+<div>
+<span><i>&nbsp;&nbsp; <b>class</b> Debugger = <b>super</b> Debugger () (</i></span></div>
+<div>
+<span><i><span></span><b>&nbsp; &nbsp; &nbsp; class</b> ThreadSubject = <b>super</b> ThreadSubject () (</i></span></div>
+<div>
+<span><i>&nbsp; &nbsp; &nbsp; &nbsp; ... code to filter activations ...</i></span></div>
+<div>
+<span><i>&nbsp;&nbsp; &nbsp; )</i></span></div>
+<div>
+<span><i>&nbsp;&nbsp; )</i></span></div>
+<div>
+<span><i>)</i></span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>You can define </span><span><i>FilteredDebugging</i></span><span> in the context of your complete DSL application.&nbsp; Or you could define it is a mixin, and just apply it to </span><span><i>Debugging</i> </span><span>in the context of the DSL application.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>No DI frameworks, no copied code, no plugin architecture that nobody can understand, and no need to have foreseen this circumstance in advance. It really is quite simple.</span></div>
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

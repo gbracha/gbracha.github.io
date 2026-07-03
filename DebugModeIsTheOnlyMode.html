@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>DebugModeIsTheOnlyMode</title></head><body data-ampleforth-doc="DebugModeIsTheOnlyMode"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on November 17th, 2012</i></h3></div>
+    <h1>Debug Mode is the Only Mode</h1>
+<br>
+<div>
+<span>There has been a fair amount of discussion recently surrounding some of Bret Victor’s <a href="//www.youtube.com/watch?v=PUv66718DII" contenteditable="false" target="_blank" rel="noopener noreferrer">talks</a></span>&nbsp;and <a href="http://worrydream.com/LearnableProgramming/" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>blog posts</span></a>. If you haven’t seen these, I recommend them highly - with a grain of salt.</div>
+<div>
+<span><br></span></div>
+<div>
+<span>These pieces make important points related to programming and programming environments, and are beautifully done.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><i>They also relate to education and other matters which I will not discuss here</i>.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Because of their exquisite presentation, they’ve elicited far more attention than others making similar points have garnered in the past. This is a good thing.&nbsp; However, beneath the elegant surface, troubling questions arise.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The demos Victor shows are spoiled by the disappointing realization that we are not seeing a general purpose programming environment that can actually work these miracles for us. Instead, they are hand crafted illustrations of how such a tool might behave. It is a vision of such an environment - but it is not the environment itself. Relatively little is said about how one might go about creating such a thing for the general case - but there are some hints.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>We should take these ideas as inspiration and see what one might do in practice. I expect this is one of the things Victor intends to achieve with these presentations.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Victor recognizes that many of his examples depend on graphical feedback and don’t necessarily apply to other kinds of programming.&nbsp; However, his use of traces and timelines&nbsp; is something we can use in general. In <a href="//youtu.be/PUv66718DII?t=18m5s" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>one segment</span></a>, the state during a loop gets unrolled automatically by the programming environment&nbsp; - morphing time into space so we can visualize the progress (or lack thereof) of the computation.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>This specific example might be handled in existing debuggers using a tail recursive formulation of loops - without tail recursion elimination! Then the ordinary view of the stack in a debugger could be used - though the trace based view may have advantages in terms of screen real estate, since we need not repeat the code. Those advantages will apply to any recursive routine, so adding an unfolded view of a recursive call (or a clique of such calls) is a small concrete step one might want to investigate.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Traces that show all the relevant data are intrinsically connected to time traveling debugging, because we want more than selective printouts - we want to be able to explore the data at any point in the trace, following the object graph that existed at the traced point where ever it may lead us.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>I firmly believe that a time traveling debugger is worth more than a boatload of language features (especially since most such boatloads have negative value anyway). &nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><i>When I first saw Bil Lewis’ </i><span><i><a href="http://www.lambdacs.com/debugger/" contenteditable="false" target="_blank" rel="noopener noreferrer">Omniscient Debugger</a></i></span><i>, I tried to convince my management to invest in this area. Needless to say, I got nowhere. </i>&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The overall view is that a program is a model of some real or imagined world that is dynamic and evolving. We should be able to experiment on that model and observe and interact with any part of it. One should be able to query the model’s entire history, searching for events and situations that occurred in the past - and then travel back to the time they occurred - or to a time prior to the occurrence, so we can preempt the event and change history at will.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The query technology enabled by a back-in-time debugger could also help make the graphical demos a reality. You ask where in my code did I indirectly call the invocation that&nbsp; wrote a given pixel. It’s a complex query, but fundamentally similar to asking when did a variable acquire a given value.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>There is a modest amount of work in this area, some of it academic, some commercial (forgive me for not citing it all here), but it hasn’t really taken off. It is challenging, because programs generate enormous amounts of transient data, and recording it all is expensive. This gives a new interpretation to the phrase <i>Big Data</i>. Data is however central to much of what we do, and data about programs should not be the exception.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>A related theme is correlating data with code by associating actual values with program variables.&nbsp; One simple example of the advantage of having values associated with variables is that we can do name completion without recourse to static type information. We get the connection between variables and their values in tools like workspaces, REPLs, object inspectors and (again!)&nbsp; debuggers, but not when viewing program text in ordinary editors or even in class browsers. &nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>In Newspeak and Smalltalk, developers sometimes build up a program from an initial sketch using the debugger, precisely because while debugging they can see live data and design their code with that concrete information in mind. You’ll find an example of this sort of thing starting around 19:10 in Victor’s talk, where an error is detected as the code is being written based on runtime values.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The <a href="http://www.smalltalk.org.br/movies/Self_big.mov" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>Self environment</span></a> shows one way of achieving this integration of live data with code. Prototype based languages have a bit of an advantage here because code is tied to actual objects - but once we are dealing with methods that take parameters we are back to dealing with abstractions just like class or function based languages. &nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><i>You might even be tempted to say that Javascript, being a prototype based language, is a modern incarnation of Self. Please don’t drink and drive; at best this is a </i><a href="http://gaslight.mtroyal.ca/mnkyspaw.htm" contenteditable="false" target="_blank" rel="noopener noreferrer"><span><i>cautionary tale</i></span></a><i> on the theme “be careful what you wish for”.</i></span></div>
+<div>
+<span><i><br></i></span></div>
+<div>
+<span>We need a process that makes it easier to go from initial sketches to stable production code. We’d like start from workspaces and being able to smoothly migrate to classes and unit tests. This is in line with the philosophy expressed in <a href="http://people.cs.aau.dk/~normark/asl2/paper.pdf" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>this paper</span></a> for example.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>It seems to me that the various tools such as editors, class browsers,&nbsp; object inspectors, workspaces, REPLs and debuggers create distinct modes of operation. It would be great if these modes could be eliminated by integrating the tools more tightly.&nbsp; There would always be a live instance of your scope associated with any code you are editing, with the ability to evaluate incrementally as you edit the code (as in a REPL) and step backwards and forwards as in a time traveling debugger.&nbsp; The exact form of such a tool remains an unmet UI design challenge.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>All of the above holds regardless if whether you are doing object-oriented or functional programming (a false dichotomy by the way) or logic programming for that matter.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<i><b>Tangent</b>: I'm aware that the notion of debugging in lazy functional languages is problematic. But the need for live data and interactive feedback remains. And once a interactive computation occurred, the timing has been fully determined. So while stepping forward may be meaningless, going back in time isn't.</i></div>
+<div>
+<span><br></span></div>
+<div>
+<span>We should stop thinking of programs as just code. The static view of code, divorced from its dynamic extent, has been massively overemphasized in the PL community. This needs to change, and it will.</span></div>
+<div>
+<span></span><br></div>
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

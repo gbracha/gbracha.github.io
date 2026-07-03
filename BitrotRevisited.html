@@ -1,0 +1,72 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>BitrotRevisited</title></head><body data-ampleforth-doc="BitrotRevisited"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on April 19th, 2022</i></h3></div>
+    <h1>Bitrot Revisited:  Local First Software and Orthogonal Synchronization</h1>
+<i>This post is based on a <a href="https://2022.programming-conference.org/details/programming-2022-Organizational/7/Day-2-Opening-Bitrot-Revisited-Local-First-Software-and-Orthogonal-Synchronization" contenteditable="false" target="_blank" rel="noopener noreferrer">invited talk</a> I gave recently at the <a href="https://2022.programming-conference.org/" contenteditable="false" target="_blank" rel="noopener noreferrer">Programming 22</a> conference. 
+<br><br>
+The talk wasn't recorded but I've recorded a reprise at:  https://youtu.be/qx6ekxXdidI </i>
+<br><br>
+
+
+The definition of insanity not withstanding, I decided to revisit a topic I have discussed many times before: <i>Objects as Software Services</i>. In particular, I wanted to relate it to recent work others have been doing.
+<br><br>
+<i>The earliest public presentation I gave on this at the <a href="https://bracha.org/oopsla05-dls-talk.pdf" contenteditable="false" target="_blank" rel="noopener noreferrer">DLS in 2005</a>. There are recordings of talks  I gave at <a href="https://www.youtube.com/watch?v=_cBGtvjaLM0" contenteditable="false" target="_blank" rel="noopener noreferrer">Google</a> and <a href="https://www.youtube.com/watch?v=z0CVuM9uWSU" contenteditable="false" target="_blank" rel="noopener noreferrer">Microsoft Research</a>, as well as several blog posts (<a href="https://gbracha.blogspot.com/2007/03/sobs.html" contenteditable="false" target="_blank" rel="noopener noreferrer"> March 2007</a>, <a href="https://gbracha.blogspot.com/2008/04/everyone-is-talking-about-cloud.html" contenteditable="false" target="_blank" rel="noopener noreferrer">April 2008</a>, <a href="https://gbracha.blogspot.com/2009/04/last-week-i-was-at-lang.html" contenteditable="false" target="_blank" rel="noopener noreferrer">April 2009</a>, <a href="https://gbracha.blogspot.com/2010/01/closing-frontier.html" contenteditable="false" target="_blank" rel="noopener noreferrer">January 2010</a> and <a href="https://gbracha.blogspot.com/2010/04/brave-new-world-of-full-service.html" contenteditable="false" target="_blank" rel="noopener noreferrer">April 2010</a>). You can also download <a href="https://bracha.org/objectsAsSoftwareServices.pdf" contenteditable="false" target="_blank" rel="noopener noreferrer">the original write up</a>. </i>
+<br><br>
+The goal is software that combines the advantages of old-school personal computing and modern web-based applications. There are two parts to this.
+<br><br>
+First, software should be available at all times. Like native apps, software should be available even if the network is slow, unreliable or absent, or if the cloud is otherwise inaccessible (say due to denial-of-service, natural disaster, war or whatever). And, like a cloud app, it should be accessible from any machine at any location (modulo network access if it hasn't run there before). Recently, this idea has started to get more attention under the name <a href="https://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=&amp;ved=2ahUKEwiujpeg-of3AhU4EEQIHcrBAscQFnoECBIQAQ&amp;url=https%3A%2F%2Fmartin.kleppmann.com%2Fpapers%2Flocal-first.pdf&amp;usg=AOvVaw1fjDETTGrTQ5q-I7QcNGrm" contenteditable="false" target="_blank" rel="noopener noreferrer">local-first software</a>.
+<br><br>
+<i>Tangent: I've proposed a number of terms for closely related ideas in older posts such as <b>Software Objects</b>, <b>Rich Network Enabled Clients</b>, <b>Network Serviced Applications</b> and <b>Full-Service Computing</b>, but whatever name gets traction is fine with me.
+</i>
+<br><br>
+Second, software should always be up-to-date (this is where Bitrot comes in). That means we always want to run the latest version available, just like a web page. This implies automatically updating application code over the network without disrupting the end-user. This latter point goes well beyond the idea of local-first software as I've seen it discussed. 
+<br><br>
+Let's take these two goals in order. 
+<ul>
+<li>For offline availability, one has to store the application and its data locally on the client device. However, unlike classical personal computing, the data has to be made available, <b>locally<i></i></b>,  to multiple clients. Now we have multiple replicas of our data, and they have to be kept in sync somehow. My proposal was to turn that responsibility over to the programming language via a concept I dubbed <i>Orthogonal Synchronization</i>. The idea was to extend the concept of orthogonal persistence, which held that the program would identify which fields in every data structure were deemed persistent, and the system would take care of serializing and deserializing their contents, recursively. With orthogonal synchronization, the data would not only be persisted automatically, but synchronized.
+</li><li>To keep the software up-to-date without disrupting the user, we want good support for dynamic software update. When the application code changes, we update the app live. How do we know when the code changes? Well, code is just data, albeit of a particular kind. Hence we sync it, just like any other persistent data. We reuse much of the same orthogonal synchronization mechanism, and since we sync both code and data at the same time, we can migrate data seamlessly whenever the code and data format changes. As I've discussed in the past, this has potentially profound implications for versioning, release cycles and software development. All this goes well beyond the focus of local-first software, and is way outside the scope of this post. See the original materials cited above for more on that aspect.
+  </li>
+</ul>
+There's only one small problem: merge conflicts. The natural tendency is to diff the persistent representations to compute a set of changes and detect conflicts. An alternative is to record changes directly, whenever setters of persistent objects are called. Either way, we are comparing the application state at the level of individual objects. This is very low level; it is an <i>extensional</i> approach, which yields no insight into the <i>intention</i> of the changes. As an example, consider a set, represented as an array of elements and an integer indicating the cardinality of the set. If two clients each add a distinct object to the set, we find that they both have the same set object, but the arrays differ. The system has no way to resolve the conflict in a satisfactory manner: choosing either replica is wrong. If one understands the <i>intention</i> of the change, one could decide to resolve the conflict by performing both additions on the original set.
+<br><br>
+Local first computing approaches this problem differently. It still needs to synchronize the replicas. However, the problem of conflicts is elegantly defined away. The idea is to use Conflict-free Replicated Data Types (CRDTs) for all shareable data, and so conflicts cannot arise. This is truly brilliant as far as it goes. And CRDTs go further than one might think. 
+<br><br>
+CRDT libraries record <i>intentional</i> changes at the level of the CRDT object (in our example, the set, assuming we use a CRDT implementation of a set); sync is then just the union of the change sets, and no conflicts arise. However, the fact that no formal conflict occurs does not necessarily mean that the result is what we actually expect. And CRDTs don't provide a good solution for code update.
+<br><br>
+Can we apply lessons from CRDTs to orthogonal synchronization? The two approaches seem quite contradictory: CRDTs fly in the face of orthogonal persistence/synchronization. The 'orthogonal' in these terms means that persistence/synchronization is orthogonal to the datatype being persisted/synced. You can persist/sync any datatype. In contrast, using CRDTs for sync means you have to use specific datatypes. One conclusion might be that orthogonal sync is just a bad idea. Maybe we should build software services by using CRDTs for data, and structured source control for code. However, perhaps there's another way. 
+<br><br>
+Notice that the concept of capturing intentional changes is distinct from the core idea of CRDTs. It's just that, once you have intentional changes, CRDTs yield an exceptionally simple merge strategy. So perhaps we can use orthogonal sync, but incorporate intentional change data and then use custom merge functions for specific datatypes. CRDTs could fit into this framework; they'd just use a specific merge strategy that happens to be conflict-free. However, we now have additional options. For example, we can merge code with a special strategy that works a bit like traditional source control (we can do better, but that's not my point here). As a default merge strategy when no intent is specified, we could treat setter operations on persistent slots as changes and just ask the user for help in case of conflict. We always have the option to specify an alternate strategy such as last-write-wins (LWW).
+<br><br>
+How might we specify what constitutes an intentional change, and what merge strategy to use? One idea is to annotate mutator methods with metadata indicating that they are changes associated with a given merge strategy. Here is what this might look like for a simple counter CRDT:
+<br><br>
+<b>class</b> Counter <b>= (|</b> count  ::= 0<b>. |)(</b>
+<br>
+<b>public</b> value <b>= (^</b>count<b>)</b>
+<br>
+<b>public</b> increment (* :crdt_change: *) <b>= (</b>
+<br>
+   count: count + 1
+  <br>
+<b>)</b>
+<br>
+<b>public</b> decrement (* :crdt_change: *)<b> = (</b>
+<br>
+     count: count - 1
+  <br>
+<b>)))</b>
+<br>
+The metadata tag (<i>crdt_change</i> in this case) identifies a tool that modifies the annotated method so that calls are recorded as change records with salient information (name of called method, timestamp, arguments) as well as a merge method that processes such changes according to a standardized API.
+<br><br> 
+ 
+Now, to what extent is this orthogonal sync anymore? Unlike orthogonal persistence, we can't just mark slots as persistent and be done; we have to provide merge strategies. Well, since we have a default, we can still argue that sync is supported regardless of datatype. Besides, quibbling over terminology is not the point. We've gained real flexibility, in that we can support both CRDTs and non-CRDTs like code. And CRDT implementations don't need to incorporate special code for serialization and change reporting. The system can do that for them based on the metadata. 
+<br><br>
+I've glossed over many details. If you watch the old talks, you'll see many issues discussed and answered.
+Of course, the proof of the pudding is in creating such a system and building working applications on top. I only managed to gather funding for such work once, which is how we created Newspeak, but that funding evaporated before we got very far with the sync problem. Sebastián Krynski worked on some prototypes, but again, without funding it's hard to make much progress. Nevertheless, there is more recognition that there is a problem with traditional cloud-based apps. As the saying goes: this time it's different.
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>TheProspectOfAnExecution</title></head><body data-ampleforth-doc="TheProspectOfAnExecution"><div id="ampleforth-ssr"> <!-- self_ampleforth -->
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on June 30th, 2022&nbsp;</i></h3></div>
+    <h1>The Prospect of an Execution: The Hidden Objects Among Us</h1> 
+    <i>Depend upon it, Sir, when a man knows he is to be hanged in a fortnight, it concentrates his mind wonderfully.</i>
+<br>
+-- Samuel Johnson
+<br><br>
+I wish to concentrate your mind, gentle reader, by focusing on an execution (not yours of course! I see you are already losing focus - no matter ...). My goal is to make you see the objects that are in front of you every day, hiding in plain sight.  
+<br><br>
+So who are we executing? Or what? The condemned operates under a wide variety of aliases that obscure its true nature: <i>a.out</i> alias <i>.exe</i> alias <i>ELF file</i> alias <i>binary</i> and more. I mean to expose the identity that hides beneath these guises: it is an object!
+<br><br>
+When we run an executable file, we call a function in that file, and that function accesses the data in the file, possibly calling other functions in the same file recursively. Replace <i>function</i> with <i>method</i>, <i>call</i> with <i>invoke</i> and <i>file</i> with <i>object</i> in the previous sentence and you will begin to see what I mean:
+<br><br>
+When we run an executable object, we invoke a method in that object, and that method accesses the data in the object, possibly invoking other methods in the same object recursively.
+<br><br>
+The initial function, the entry point, is often called <i>main()</i>. 
+
+Consider the venerable <i>a.out
+
+</i>: it is a serialized object on disk. When the system loads it, it's deserializing it. The system then invokes the object's <i>main()</i> method; essentially, the system expects the executable to have an interface:
+<br><br>
+<i><b>interface</b> Executable {main(argc: Integer, argv: Array[String])}</i>
+<br><br>
+<a href="https://en.wikipedia.org/wiki/Executable_and_Linkable_Format" contenteditable="false" target="_blank" rel="noopener noreferrer">ELF</a> can also be viewed as a serialization format for objects in this way. We aren't used to thinking of loading and running in this way, but that doesn't detract from the point. Once you see it, you cannot unsee it. 
+<br><br>
+<a href="https://newspeaklanguage.org/" contenteditable="false" target="_blank" rel="noopener noreferrer">Newspeak</a> makes this point of view explicit. In Newspeak, an application is an object which supports the method <i>main:args:</i>. This method takes two arguments: a platform object, and an array object whose elements are any specific arguments required. The platform object provides access to standard Newspeak platform functionality that is not part of the application itself. To deploy an application, we serialize it using conventional object serialization. Objects reference their class, and classes reference mixins which reference methods. All of these are objects, and get serialized when we serialize the application object. So all the application's code gets serialized with it. Running the deployed app is a matter of deserializing it and calling <i>main:args:</i>.
+<br><br>
+<i>The advantage of recognizing this explicitly is conceptual parsimony, which yields an economy of mechanism. You can literally reuse your object serializer as a deployment format. Serializing data and serializing code are one and the same.</i>
+<br><br>
+Executables aren't the only objects that aren't recognized as such. Libraries are also objects. It doesn't matter if we are talking about DLLs at the operating system level or about packages/modules/units at the programming language level, or packages in the package-manager sense. The key point about all these things is that they support an API - an Application Programming Interface. We'll dispense with the acronym-happy jargon and just say <i>interface</i>. In all these cases, we have a set of named procedures that are made accessible to callers. They may make use of additional procedures, some publicly available via the interface, and some not. They may access data encapsulated behind the interface; that data may be mutable or not. The key thing is the notion of an interface.
+<br><br>
+Even if you are programming in a pure functional setting, such objects will make an appearance. The packages of Haskell, and certainly the structures of ML, are not all that different. They may be statically typed or they may be not. They may be statically bound at some level - but as long as we have separate compilation, this is just an optimization that relies on certain rigidities of the programming model. That is, your language may not treat these things as first class values, but your compilation units can bind to different implementations of the same package interface, even if they can only bind to one at a time. So even if the language itself does not treat these entities as true objects with dynamically bound properties, they have to act as objects in the surrounding environment.
+<br><br>
+<i>In many systems, the API might expose variables directly. And they very often may expose classes directly as well. Nevertheless, these are all late-bound at the level of linking across compilation units or OS libraries.</i>
+<br><br>
+The notion of an interface is what truly characterizes objects - not classes, not inheritance, not mutable state.  Read <a href="http://www.cs.utexas.edu/~wcook/Drafts/2009/essay.pdf" contenteditable="false" target="_blank" rel="noopener noreferrer">William Cook's classic essay</a> for a deep discussion on this.
+<br><br>
+So the next time someone tells you that they don't believe in objects, that objects are bad and one shouldn't and needn't use them, you can politely inform them that they shouldn't confuse objects with Java and the like, or even with imperative programming. Objects are always with us, because the concept of abstracting over implementations via an interface is immensely valuable.
+<div><br></div><div><br></div>
+
+<div><br></div><div><br></div>
+
+<div><br></div><div><br></div>
+
+<div><br></div><div><br></div>
+
+</div><script>
+
+        const textContainer = document.querySelector('p');
+</div></div></script></div><script src="deploy-boot.js"></script></body></html>
