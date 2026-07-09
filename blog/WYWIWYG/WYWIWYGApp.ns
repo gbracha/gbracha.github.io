@@ -1,0 +1,84 @@
+Newspeak3
+'Root'
+class WYWIWYGApp packageUsing: manifest = (
+    | 
+    private HopscotchIDE = manifest HopscotchWebIDE packageUsing: manifest.
+    private transcludedSource <String> = manifest LiveAnE_mmanual.
+    private docSource <String> = manifest WYWIWYG.
+    private immutableDocSource <String> = manifest WYWIWYG_immutable.    
+    private LiveAnE_mmanual
+    private WYWIWYG 
+    private WYWIWYG_immutable    
+    |
+) (
+class Viewer usingPlatform: p = (
+  |
+  Presenter = p hopscotch Presenter.  
+  Subject = p hopscotch Subject.
+  Map = p collections Map.
+  |
+) (
+class DocViewer onSubject: s = Presenter onSubject: s  (
+) (
+definition ^ <Fragment> = (
+  ^ampleforth: subject text mapping: subject mapping
+)
+isMyKind: f <Fragment> ^ <Boolean> = (
+  ^f isKindOfDocViewer
+)
+public isKindOfDocViewer ^ <Boolean> = (
+  ^true
+)
+) : (
+)
+public class DocSubject onModel: m <Document> = Subject onModel: m (
+  |
+  public mapping = Map new at: #AmpleforthTargetDocument put: model; yourself.
+  |
+) (
+public text ^ <String> = (
+  ^model contents
+)
+isMyKind: s <Subject> ^ <Boolean> = (
+  ^s isKindOfDocSubject
+)
+public isKindOfDocSubject ^ <Boolean> = (
+  ^true
+)
+createPresenter ^ <DocViewer> = (
+  ^DocViewer onSubject: self
+)
+) : (
+)
+) : (
+)
+public bodyOfDocument: dom  <Alien[Node]>  ^ <String> = (
+  | 
+  docCandidates = dom getElementsByClassName: 'ampleforthDocumentBody'. 
+  ampleforthDocument <Alien[Element] | Nil> = 
+    docCandidates at: 0.
+  |
+  ampleforthDocument out.
+  ^ampleforthDocument
+)
+extendIDENamespace: ide <HopscotchWebIDE> = (
+  LiveAnE_mmanual:: ide documents freshDocumentWithContents: transcludedSource.
+  ide namespacing Root  at: 'LiveAnE_mmanual' put: LiveAnE_mmanual.
+  WYWIWYG:: ide documents freshDocumentWithContents: docSource.
+  WYWIWYG_immutable:: ide documents freshDocumentWithContents: immutableDocSource.  
+  ide namespacing Root at: #WYWIWYG put: WYWIWYG
+)
+public main: platform args: args = (
+  | 
+  ide <HopscotchWebIDE> = HopscotchIDE ideUsingPlatform: platform.
+  window = ide browsing IDEWindow.
+  viewer = Viewer usingPlatform: platform.
+  subject
+  |
+
+  extendIDENamespace: ide.
+  subject:: viewer DocSubject onModel: WYWIWYG_immutable.
+  window openSubject: subject.
+)
+) : (
+)

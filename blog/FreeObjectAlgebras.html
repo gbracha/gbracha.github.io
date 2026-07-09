@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>FreeObjectAlgebras</title></head><body data-ampleforth-doc="FreeObjectAlgebras"><div id="ampleforth-ssr"> <!-- self_ampleforth -->
+  <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+   <div class="blog"> <h1>Room 101</h1><h1><hr style="font-size: 14px; font-weight: 400;"></h1><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><h1><div style="font-size: 14px; font-weight: 400;"></div></h1><h3><i style="font-size: 14px; font-weight: normal;">June 1st, 2024</i></h3><div><div></div><h1><div>Free Object Algebras</div><div></div></h1><div><br></div><div>What's better than a double entendre? A triple entendre. So beware: these algebras are free as in beer.</div><div><br></div><div>The idea of object algebras isn't as well known as it should be. I'm going to discuss them briefly, as well as related topics like visitors and the <a href="https://homepages.inf.ed.ac.uk/wadler/papers/expression/expression.txt" contenteditable="false" target="_blank" rel="noopener noreferrer">expression problem</a>. Everything I'll say is well known, except perhaps the fact that the Newspeak programming language automatically gives you the benefits of object algebras without you having to do anything special or even know what object algebras are. It gives you object algebras for free.</div>
+   <div><br></div>
+   <div>Object Algebras were introduced by Bruno Oliveira and William Cook as a solution to the expression problem in languages that don't provide more advanced constructs, like mixins or virtual classes. If you don't know about the expression problem, you can read<a href="https://blog.bracha.org/primordialsoup.html?snapshot=AmpleforthViewer.vfuel&amp;docName=ExpressionProblem" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>&nbsp;</span>the previous post</a>, that explains the problem and how Newspeak deals with it.&nbsp;&nbsp;</div><div><br></div><div>An <i>Object Algebra</i> implements a generic factory interface. Instead of factory methods that produce instances of specific classes, the interface uses one or more type parameters. These abstract over what exactly is being manufactured by the factory.&nbsp;&nbsp;</div><div><br></div><div><i><b>interface</b> Employees&lt;E, M&gt; {</i></div><div><i>&nbsp; &nbsp;employee(n: String, m: M): E</i></div><div><i>&nbsp; &nbsp;manager(n: String, rs: List&lt;E&gt;</i><i>, m: Manager</i><i>): M</i></div><div><i>}</i></div><div><br></div><div>The point of the abstraction is that we can use the same interface to produce many different things. Thus, code that used a regular factory to produce (say) a given expression tree, can be used to produce a derivative of that tree - for example, its value or printed representation.&nbsp; The code just abstracts over the "factory".</div><div><br></div><div><div><i>overseer := &lt;E,M&gt;<b>fun</b>(es: Employees&lt;E, M&gt;): M {&nbsp;</i></div><div><i>&nbsp;&nbsp;<b>return</b>&nbsp;es.manager('pointy-head-boss', [es.employee('catbert'), es.employee('dilbert')], ceo);</i></div><div><i>}</i></div></div><div><br></div><div>Here are two example factories. One is truly a factory for <i>Employee</i> objects.</div><div><br></div><div><i><b>class</b> EmployeesImpl <b>implements</b> Employees&lt;Employee, Manager&gt; {</i></div><div><i>&nbsp; employee(n: String, m: Manager): Employee {<b>return</b> new&nbsp;</i><i>Employee</i><i>(n, m);}</i></div><div><i>&nbsp; manager(n: String, rs: List&lt;Employee&gt;</i><i>, m: Manager</i><i>): Manager {</i></div><div><i><b>&nbsp; &nbsp; return</b> new Manager(n, rs, m);</i></div><div><i>&nbsp; }</i></div><div><i>}</i></div><div><br></div><div>The other computes the number of reports of an employee.</div><div><br></div><div><i><b>class</b> TotalReportsNumber&nbsp;<b>implements</b> Employees&lt;Integer, Integer&gt; {</i></div><div><i>&nbsp; &nbsp; employee(n: String, m: Manager): Integer {return 0;}</i></div><div><i>&nbsp; &nbsp; manager(n: String, rs: List&lt;Employee&gt;</i><i>, m: Manager</i><i>): Integer {</i></div><div><i>&nbsp; &nbsp; &nbsp; <b>return</b>&nbsp;sum(map(fun(x) {return x(self) + 1}, rs);}</i></div><div><i>}</i></div><div><i><br></i></div><div>Here are some sample usages</div><div><br></div><div><i>phead: Manager := overseer(EmployeesImpl);</i></div><div><i>totalReports: Integer := overseer(TotalReportsNumber);</i></div><div><br></div><div>Alternate factories like <i>TotalReportsNumber</i> are very similar to visitors, but don't require our original classes to include a built-in <i>accept()</i> method. So we can easily add new "functions" by defining new factories.&nbsp;&nbsp;</div><div><br></div><div>If we want to add types, we just add them, and declare an extended subinterface with added constructor methods for the new types.&nbsp;</div><div><br></div><div><div><i><b>interface</b>&nbsp;Consultants&nbsp;</i><i>&lt;E, M, C&gt;&nbsp;</i><i><b>extends</b>&nbsp;Employees&lt;E, M&gt; {</i></div><div><i>&nbsp; consultant(n: String, m: M): C&nbsp;</i></div><div><i>}</i></div></div><div><br></div><div>To process them, we can declare new subclasses of our existing factories with additional functions.</div><div><br></div><div><div><i><b>class</b>&nbsp;ConsultantImpl&nbsp;<b>extends</b>&nbsp;EmployeeImpl <b>implements</b>&nbsp;</i><i>Consultants&nbsp;</i><i>&lt;Employee, Manager, Consultant&gt;&nbsp;</i><i>{</i></div><div><i>&nbsp; consultant(n: String, m: Manager): Consultant&nbsp;{<b>return</b>&nbsp;new&nbsp;Consultant(n, m);}</i></div><div><i>}</i></div><div><br></div></div><div><div><i><b>class</b>&nbsp;ConsultantTotalReports&nbsp;<b>extends</b>&nbsp;</i><i>TotalReportsNumber</i><i>&nbsp;<b>implements</b>&nbsp;</i><i>Consultants&nbsp;</i><i>&lt;Integer,&nbsp;</i><i>Integer</i><i>,&nbsp;</i><i>Integer&nbsp;</i><i>&gt;&nbsp;</i><i>{</i></div><div><i>&nbsp; consultant(n: String, m: Manager): Integer {<b>return</b>&nbsp;-1;}</i></div><div><i>}</i></div></div><div><br></div><div>Object Algebras leverage the duality between types and functions. We encode our types/classes as constructor functions: <i>manager()</i> for <i>Manager</i>, <i>employee()</i> for <i>Employee</i> etc. The functions that process these types are encoded as classes (the object algebras), and represented at runtime by instances of these classes.&nbsp; Objects generated by constructors (like <i>overseer</i>) are encoded as functions or closures (such as<i> overseer()</i>) parameterized by factory/object algebra instances.</div><div><br></div><div>Object algebras are very clever. I argue they're too clever. What if there was an easier way?</div><div><br></div><div>Here's the class <i>EmployeesImpl</i> in Newspeak<br></div><div><div><br></div><div></div><div> <pre class="newspeak-source">Newspeak3
+'Root'
+class EmployeesImpl new = Object new (
+) (
+	public class Employee name: n &lt;String&gt; manager: m &lt;Manager&gt; = Object new (
+		|
+			public name &lt;String&gt; = n.
+			public overseer &lt;Manager&gt; = m.
+		|
+	) (
+	) : ()
+	public class Manager name: n &lt;String&gt; reports: rs &lt;List[Employee]&gt; manager: m &lt;Manager&gt; = Object new (
+		|
+			public reports &lt;List[Employee]&gt; = rs.
+		|
+	) (
+	) : ()
+) : ()</pre></div><div><br></div><div><i><b>Caveat: </b>The Newspeak version doesn't enforce the types.&nbsp;</i><i>Typechecking Newspeak is a side project I have never completed, which tells you that isn't trivial&nbsp;</i><i>(due to class hierarchy inheritance),</i><i>&nbsp;but also that it is not all that critical.</i></div><div><i><br></i></div><div><div>In Newspeak, nested classes implicitly define accessor methods,&nbsp; so our nested classes already act like the constructor functions.</div></div><div><br></div></div><div>Now, if we need to add a type, we simply subclass <i>EmployeesImpl</i>.&nbsp;</div><div><br></div><div><br></div><div>&nbsp; <pre class="newspeak-source">public class EmployeesAndConsultantsImpl new = EmployeesImpl new (
+	) (
+public class Consultant name: n &lt;String&gt; manager: m &lt;Manager&gt; = Employee name: n
+			manager: m (
+		) (
+public consultee ^&lt;Manager&gt; = (
+				^overseer
+			)
+) : (
+)
+) : (
+)
+</pre>  <i></i></div><div><br></div><div>Note that <i>EmployeesAndConsultantsImpl</i> is itself a nested class. Why? Newspeak has no global namespace, so we cannot reference subclass <i>EmployeeImpl</i> as a superclass of a top level class. Hence we cannot define&nbsp;<i>EmployeesAndConsultantsImpl</i>&nbsp;as a top level class. Instead, we define it within a top level class,&nbsp;&nbsp;<i>ConsultantsExtension</i>, that is parameterized with respect to&nbsp;<i>EmployeesImpl.&nbsp;</i> You might say this is awkward, but in reality, it helps ensure the modularity we are seeking.&nbsp;</div><div><br></div><div><i>The absence of a global namespace is essential in an object capability language. Security and modularity are closely related.</i></div><div><br></div><div>Object algebras act as factories for objects, and objects are represented by functions parameterized with respect to their factories - the object algebra that creates them. In our Newspeak code,&nbsp; the object creation code will also be parameterized with respect the factories of those objects - the class(es) that produce them.</div><div><br></div><div>If we need to add a function, we define&nbsp;a subclass of <i>EmployeesImpl</i> where each type defined within <i>EmployeesImpl</i> is overridden to extend itself with the new function.</div><div><br></div><div><i>You see the same pattern of parameterizing over the Employee factory used.</i></div><div><br></div><div><div><br></div></div><div>&nbsp; <pre class="newspeak-source">public class ReportsTotaler new = EmployeesImpl new (
+	) (
+public class Manager name: n &lt;String&gt; reports: rs &lt;List[Employee]&gt; manager: m &lt;Manager&gt; = super Manager name: n
+			reports: rs
+			manager: m (
+		) (
+public totalReportsNumber ^&lt;Integer&gt; = (
+				^reports inject: 0
+					into: [:sum &lt;Integer&gt; :x &lt;Employee&gt; | sum + x totalReportsNumber + 1 ]
+			)
+) : (
+)
+public class Employee name: n &lt;String&gt; manager: m &lt;Manager&gt; = super Employee name: n
+			manager: m (
+		) (
+public totalReportsNumber ^&lt;Integer&gt; = (
+				^0
+			)
+) : (
+)
+) : (
+)
+</pre> <i></i></div><div><br></div><div><br></div><div>And of course, we can define a new class that extended <i>EmployeesAndConsultantImpl</i> with a nested&nbsp;<i>Consultant</i> class that could total its reports.&nbsp;</div><div><br></div><div></div><div> <pre class="newspeak-source">public class ReportsTotaler new = EmployeesAndConsultantsImpl new (
+	) (
+public class Consultant name: n &lt;String&gt; manager: m &lt;Manager&gt; = super Consultant name: n
+			manager: m (
+		) (
+public totalReportsNumber ^&lt;Integer&gt; = (
+				^-1
+			)
+) : (
+)
+) : (
+)
+</pre> <br></div><div><br></div><div>We can compose all of these for a complete solution. The method <i>aCompleteSolution</i> is defined in this document, and has all the necessary parts in scope.</div><div><br></div><div><i>You can inspect the document object using the document menu at the top.</i></div><div><br></div><div></div><div> <pre class="newspeak-source">aCompleteSolution = (
+
+  |
+  ec = ConsultantExtension of: (TotalReportExtension of: EmployeesImpl) ReportsTotaler.
+  ecr = ConsultantReportExtension of: ec EmployeesAndConsultantsImpl.
+  oa = ecr ReportsTotaler new.
+  ceo = oa Manager name: 'C.E. Oh' reports: platform collections List new manager: nil.
+  pointy_head_boss = oa Manager name: 'P.H. Negative' reports: platform collections List new manager: ceo.
+  catbert = oa Employee name: 'Catbert' manager: pointy_head_boss.
+  dilbert = oa Employee name: 'Dilbert' manager: pointy_head_boss.
+  consultant = oa Consultant name: 'Anon' manager: ceo.
+  |
+  pointy_head_boss reports add: dilbert; add: catbert.
+  ceo reports add: pointy_head_boss; add: consultant.
+  ^pointy_head_boss totalReportsNumber.
+)</pre> <br></div><div><br></div><div>In Newspeak every nested class has a corresponding method. Hence if we define a set of classes inside a single outer class, the outer class is exactly a factory for them, much like an object algebra.&nbsp; Newspeak's modularity means that we naturally write code that accepts instances of the outer class as parameters, and therefore produces different things depending on which outer class we feed it.&nbsp; You don't need visitors, nor do you need object algebras. This sort of modular design happens automatically.&nbsp;</div></div><div><br></div><div><br></div>    </div></div><script src="deploy-boot.js"></script></body></html>

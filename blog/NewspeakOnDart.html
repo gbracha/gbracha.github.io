@@ -1,0 +1,70 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>NewspeakOnDart</title></head><body data-ampleforth-doc="NewspeakOnDart"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on August 23rd, 2012</i></h3></div>
+    <h1>Newspeak on Dart</h1>
+<span>We've wanted to run Newspeak to run in a web browser for a long time - actually, since before the Newspeak project started. &nbsp;The need for better programming languages for the internet platform has been evident for a while. &nbsp;In a better world, the Newspeak project would be focused on that from day 1. &nbsp;</span><br>
+<div>
+<span><br></span></div>
+<div>
+<span>However, this world is suboptimal. &nbsp;It was only in 2010 that I spent some time sketching out the first version of NS2JS, the Newspeak-to-Javascript compiler. It was a toy, but in 2011, Vassili Bykov managed to bring it to the verge of self hosting. Performance, however, was&nbsp;abysmal. &nbsp;Having since joined the Dart project and learned more and more about the challenges Javascript poses as a compilation target (or anything else) I guess this really should not have been a surprise.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>We were able to reuse a part of that effort this summer when Ryan Macnak came to&nbsp;Google in Mountain View as an intern with the Dart team. His mission: NS2Dart, a Newspeak to Dart compiler. A detailed report is&nbsp;available&nbsp;at</span></div>
+<div>
+<span><br></span>
+<a href="https://docs.google.com/document/d/1pU_nautpK49pJzwZkJM1NhACcad0Hjq0rjIomLSWQ1Y/edit" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>https://docs.google.com/document/d/1pU_nautpK49pJzwZkJM1NhACcad0Hjq0rjIomLSWQ1Y/edit</span></a></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The results are promising, though there is still a long way to go. Despite&nbsp;considerable&nbsp;losses due to impedance mismatches,&nbsp;on the Dart VM, NS2JS comes within a factor of 2 of the Squeak based Newspeak implementation (NS2Squeak). Given that the current version of NS2Squeak is twice the speed it used to be (thanks to <a href="http://www.mirandabanda.org/cogblog/about-cog/" contenteditable="false" target="_blank" rel="noopener noreferrer">Cog</a>) &nbsp;it looks like performance is tolerable already. And since Dart will get much faster (the numbers in the tech report are already out of date), the future looks bright.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Now, when someone says the future looks bright, you should be getting nervous.&nbsp;So, just sign the dotted line, and then I'll get to the caveats ...</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The current version relies on access to Dart VM's embedding API, which means you cannot run it in the browser. Hopefully, over time enough functionality will get added in the way of mixins and mirror builders that the same results can be accomplished in pure Dart. That is not yet certain, but let's retain the&nbsp;uncharacteristically&nbsp;optimistic tone of this post, and assume that does happen.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Since most browsers are likely to run Dart via translation to Javascript for some time, we need to look at the NS-Dart-JS pipeline: compiling Newspeak via NS2Dart, and feeding the result to dart2js (The Dart to Javascript compiler) to obtain Javascript code that runs in any browser.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Early on, NS2Dart could run on top of dart2js (by cheating on things like dynamic mixin application) and&nbsp;results were much better than with NS2JS. This is to be expected: dart2js does the heavy lifting for us.&nbsp;&nbsp;The dart2js compiler already has 4-5 times as much code as NS2JS and is being developed by a very skilled team who understand JS performance inside and out. &nbsp;Furthermore, it has taken a while to get to this point and performance work is by no means done yet.&nbsp; So I don't feel too bad about our efforts on NS2JS.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Nevertheless, there is a lot of uncertainty over how well Newspeak can run on top of current Javascript implementations. A key problem area are non-local returns (NLRs). These are essential for user defined control constructs. They are not supported in Dart precisely because it is not clear how efficiently they can be&nbsp;implemented&nbsp;on top of Javascript.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Mirror support on NS2Dart is very partial - the mapping to Dart's mirrors is pretty clean so far, but Dart mirrors are a work in progress, and so far only cover introspection.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Then there remains the small matter of the UI. I'd love to see the Hopscotch GUI on the browser, but that is a ton of work as well. &nbsp;We'll see what UI solutions shape up in that space - we can always just call out to whatever UI Dart exposes (Ryan also implemented a Dart Alien API).&nbsp;So altogether, it might be a tad premature to declare victory, but we are making progress.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The dream remains to get a fully functioning system, Hopscotch, IDE and all that works well in the browser. However, I can imagine that many applications could get by with a lot less. &nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><span>The details are in Ryan's report and the code is in the </span><a href="https://bitbucket.org/newspeaklanguage/" contenteditable="false" target="_blank" rel="noopener noreferrer">Newspeak repo</a><span>,&nbsp;where you can also get the latest Newspeak images with which to view it (I&nbsp;recommend&nbsp;you do that rather than use the old release; a new release will be out very soon).&nbsp;</span></span><span>Thanks are due &nbsp;to Vassili (whose work on NS2JS made this possible) &nbsp;and to my colleagues on the Dart team, who graciously supported this effort in various ways, and most of all to Ryan.</span><br>
+<span><span><br></span></span>
+<span><span>Altogether, getting a top quality programming experience on the web requires a major effort. &nbsp; Dart is beginning to make this possible.</span></span></div>
+<div>
+<span><br></span></div>
+<div>
+<br></div>
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

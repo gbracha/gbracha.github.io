@@ -1,0 +1,148 @@
+<div class = "ampleforthDocumentClass" name = "WYWIWYG" classBody = "() (
+nestedEditor = (
+  ^(ide documents DocumentSubject onModel: (ide namespacing Root at: #LiveAnE_mmanual)) presenter
+)
+goHome = (
+  ^homeButton
+)
+unlockButton = (
+  ^button: 'Edit this Essay' action: [
+       enterSubject: (ide browsing ObjectSubject onModel: (platform mirrors ObjectMirror reflecting: (ide namespacing Root at: #WYWIWYG)))
+   ]
+)
+) : (
+)
+" </div><div class = "ampleforthDocumentBody"><body><div contenteditable="true" style="border: 2px solid blue; resize: horizontal; overflow: auto; width: 750px" onkeyup="updateRawHTML()"> 
+<h2>What You Want Is What You Get</h2>
+<p>Today I want to discuss text editors, specifically, rich text editors.&nbsp; This post will focus on one particular issue in the design of such editors, the tension between two extremes, WYSIWYG (What You See Is What You Get) and markup.</p><p>WYSIWYG has the advantage of liveness. 
+You have the final product directly in front of you at all times; 
+every action you take is immediately reflected in it. It is <i>concrete</i>.
+Markup has all the benefit of using a language. You edit a description of a document,
+written in a markup language. That language allows you to define and use <i>abstractions</i>.
+You can compose sophisticated abstractions out of simpler ones. In some
+systems, you can even write metaprograms that manipulate markup programs,
+allowing you to analyze, transform or even synthesize documents.<br></p>
+My goal, as usual, is to have my cake and eat it too: in this case,  combine
+the advantages of both of the above approaches.
+<p>
+</p><p><i>Tangent: I was gratified to learn recently that this perspective on cake ownership and consumption has long been advocated by Alan Kay.  It is indeed a very valuable approach to design issues,
+technical or otherwise.</i></p>
+<p>First, a few more background observations.
+</p><ul>
+<li>Markup naturally lends itself to a very important kind of abstraction: 
+abstracting over presentation detail.  This allows for keeping content and
+presentation separate. We see this in many places: the distinction between
+<i>\it</i> and <i>\emph</i> in LaTeX, or between CSS and HTML,
+or between Model and View in GUI.</li>
+<li> Markup does not necessarily impose such an abstraction however.  
+The markup language's features can be presentation
+specific. Likewise, some tools allow you to edit a rendered document live,
+but take pains to formulate their interactive operations as semantic operations.
+ Editing live documents in this way
+is often referred to by the 
+ acronym <a contenteditable="false" href="https://en.wikipedia.org/wiki/WYSIWYM">
+WYSIWYM (What You See Is What You Mean)</a> 
+</li>
+<p> <i>The acronym is a bit unfortunate, since it's hard to discern what it means.</i></p>
+<li>Even a pure WYSIWYG tool maintains a description of the document it creates as
+part of its internal data structures. WYSIWYM tools tend to use a markup
+language program as the definitive document description.</li>
+<p>To combine, as much as possible, the strengths of markup and of live 
+document editing, <strong>the editor's model, its sole
+source of truth, should be a markup program describing the document, and
+that model should be exposed to the user</strong>. This is the correct design for a
+rich text editor, independent of whether one embraces WYSIWYM or not.
+</p><p><i>Text editors that do not deal with rich text, i.e., 
+<b>poor text editors</b>,&nbsp; need not be concerned with markup, 
+as there is nothing for markup to say; there is nothing but the text, as a certain French philosopher reputedly said.</i></p>
+<p>
+Every edit should result in a modified markup program, which should be instantly processed to 
+produce the rendered view the user sees. The user should have the option of seeing, and if they wish, 
+editing, the markup program in a parallel view. Of course the two views should always be in sync: 
+if you modify the markup, the change is immediately reflected in the rendered view, and vice versa.
+</p><p>
+Here is an example of what that looks like:</p>
+<div class="ampleforth" name="nestedEditor"></div>
+
+<p>Above is an editor; it is running live inside this post.&nbsp;</p>
+<p><i>Caveat Emptor: It's just a prototype, be gentle. 
+It's buggy and lacks many features, but many of these deficiencies can be overcome using the markup. 
+That's another advantage of the architecture I'm advocating for here.</i></p><p>You can edit the rich text directly.
+To its left is a toggle; if you click on it,  it will expand into a raw text editor showing HTML
+that defines the rich text shown on the right. You can edit that HTML and see the changes take
+effect immediately in the rendered document. You can also do the opposite: edit the rich text
+and see how the markup is updated to reflect that.&nbsp;</p>
+<p>Of course, a modern editor must not be limited to text, however well typeset. One has to be
+able to embed live widgets within it.&nbsp; How shall we do that? 
+Above the text is another toggle. It opens up a toolbar that provides more functionality. 
+Open it, and type the string&nbsp;<i>alertButton</i> into the text above. 
+Then select that string, and press the button marked <i>Make it an Amplet</i>&nbsp;&nbsp;on the toolbar. You should now have a live button embedded in the text. 
+Press it for an important message.</p><p>This post was created in the same editor, and it includes
+live widgets. One is the editor above. Another is this button:&nbsp;&nbsp;<span class="ampleforth" name="unlockButton"></span> . If you click on it, 
+you'll see an object presenter on a document (documents are objects of course, just like everything else). The object presenter includes an editor of the same kind as above, 
+with the same contents as this web page. However, unlike this page, the text is mutable. If you don't like what I've been saying, you can edit it as you wish.</p>
+<p>Of course, this architecture isn't new. Some form of it has been around since the 1980s.
+</p>
+<p><i>I have fond memories of Framemaker, which I used extensively in
+the late 90s and early 2000s. The specifications for the Java language and VM were written using it.</i></p>
+<p>However, it's been uncommon to have it fully realized as a two view editor that's
+live in both directions and incorporates live widgets. Rarer still is the ability 
+to write new widgets or modify existing ones live in the same editor,
+or modify the editor live from with itself.</p>
+<p>If you want to know more about how this particular editor works, you can watch this <a contenteditable="false" href="https://youtu.be/i8zkG5OBYSQ">5 minute video</a>, 
+or this older, more detailed <a contenteditable="false" href="https://youtu.be/aIhx4o6r9-o">15 minute one</a>. 
+Or just go to the Newspeak IDEs home screen and&nbsp; explore the code:&nbsp;&nbsp;</p><div class="ampleforth" name="goHome" contenteditable="false"></div><br><p></p><p>Of course, there are other important aspects of editor design. 
+Editors should be totally scriptable, as I wrote in a <a contenteditable="false" href="https://gbracha.blogspot.com/2014/08/taking-it-to-themacs.html">post</a> some years ago.&nbsp; 
+I'd also argue the editor should be implemented in its own, self-hosting, scripting language. Moreover, all these principles apply beyond text editing. 
+Ultimately, the editor, UI, IDE and operating system should all converge into a unified, coherent environment to serve humans.&nbsp; 
+We won't tackle all of that today; just remember that there is a whole lot more beyond the text.</p></ul></div>
+
+</body></div>   <script type="text/javascript">
+      function scheduleTurn(timeout) {
+        if (timeout >= 0) {
+          setTimeout(function() {
+            var timeout = Module._handle_message();
+            scheduleTurn(timeout);
+          }, timeout);
+        }
+      }
+
+      var Module = {
+        noInitialRun: true,
+        noExitRuntime: true,
+        onRuntimeInitialized: function() {
+          var url = new URLSearchParams(window.location.search);
+          var request = new XMLHttpRequest();
+          request.open("GET", url.get("snapshot"), true);
+          request.responseType = "arraybuffer";
+          request.onload = function (event) {
+            var jsBuffer = new Uint8Array(request.response);
+            var cBuffer = _malloc(jsBuffer.length);
+            writeArrayToMemory(jsBuffer, cBuffer);
+            Module._load_snapshot(cBuffer, jsBuffer.length);
+            _free(cBuffer);
+            scheduleTurn(0);
+          };
+          request.send();
+        },
+        print: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.log(text);
+        },
+        printErr: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.error(text);
+        },
+        setStatus: function(text) {
+          console.log(text);
+        },
+      };
+    </script>
+<script async type="text/javascript" src="primordialsoup.js"></script>
+    <script src="CodeMirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="CodeMirror/lib/codemirror.css"></link>
+    <script src="CodeMirror/addon/display/autorefresh.js"></script>

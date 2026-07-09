@@ -1,0 +1,71 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>TakingItToThemacs</title></head><body data-ampleforth-doc="TakingItToThemacs"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on August 29th, 2014</i></h3></div>
+    <h1>Taking it to Th’emacs</h1>
+<div>
+<span>Emacs is my preferred text editor. I don’t use old-fashioned text editors as much as I used to, because I often need more specialized tools.&nbsp; I use IDEs for various programming languages and other things when producing high quality documents. And yet, I often wish I could subsume these with a tool that had the basic goodness of emacs.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>What makes emacs interesting all these decades after its inception is not what keyboard shortcuts it supports or what its basic editing functionality is. Rather, what matters are some of its underlying design principles.</span></div>
+<ul>
+<li><span>Emacs has built-in scripting language.&nbsp;</span></li>
+<li><span>That language (elisp), while it has many flaws, is a flexible, dynamic, and rather general purpose language.&nbsp;</span></li>
+<li><span>All of the editor’s functionality is exposed via APIs written in the scripting language.</span></li>
+</ul>
+<div>
+<span>As a consequence, you can control everything emacs does&nbsp;programmatically. This makes emacs extensible in a way that is far deeper and more powerful than a plug-in architecture.&nbsp;A plug-in architecture must anticipate every desired extension to the system. Since it never can, it always disappoints in the end. Along the way it grows ever more complex and bloated in its futile attempt to foresee every possible need. With a language, you can code any extension you need.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>If the scripting language is truly dynamic, and allows you to not only extend but also <i>modify</i> the running system, the possibilities are truly unlimited.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The points above are not limited to editors. They are fundamentals of system design.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><i>There was a time when even Microsoft recognized this, making apps that could be programmed via VisualBasic. Sadly, they concocted a security nightmare, because malware can also control your application. Which is why being able to secure your application’s scripting language is critical as well.&nbsp;</i></span></div>
+<div>
+<span><i><br></i></span></div>
+<div>
+<span>Last June, <a href="http://www.infoq.com/presentations/web-programming-future" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>I spoke at QCon NY</span></a>, and demonstrated a number of interesting web based systems that had some these properties (as well as a couple that did not, but were interesting for other reasons):</span></div>
+<ul>
+<li><span><a href="https://github.com/zot/Leisure" contenteditable="false" target="_blank" rel="noopener noreferrer">Leisure</a> is a presentation manager that incorporates a lazy functional programming language. Modulo some person-years of engineering, it is to PowerPoint what emacs is to NotePad.&nbsp;</span></li>
+<li><span>The <a href="http://lively-kernel.org/repository/webwerkstatt/gettingStarted.xhtml" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>Lively Kernel</span></a> could be thought of as a GUI builder scripted via Javascript; this an insult to Lively of course, because it is much more than that.&nbsp; In Lively, the GUI is the GUI builder; every GUI you make is extensible and modifiable in the same way.</span></li>
+<li><span>Lastly I showed <a href="https://8a616521eaba88639fe08345a88fa288e26a6b34.googledrive.com/host/0B7VkTjJg2xYDNHphX3JSNFFsd1E/samples/MiniBrowser/MiniBrowser.html" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>Minibrowser</span></a>, a prototype web based IDE for Newspeak. Like all IDEs in the Smalltalk tradition, it can be extended and modified from within itself.</span></li>
+</ul>
+<div>
+<span>We really need an Emacs for the modern age.&nbsp; An editor, surely, but one that lets you edit rich text, images, audio and video. In fact, you should be able to embed arbitrary widgets. And of course it needs to be scriptable I just explained. So you might evaluate code that creates a UI element and inserts into the editor. &nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Now you can make the editor modify its own GUI. In fact, the editor can be extended into a general purpose GUI builder just like Lively. And every such GUI can modify itself if you wish; sometimes you may wish to modify it so it can no longer modify itself, and then you have a frozen application. Your editor has become an IDE. In fact, it is a <i>live literate programming environment</i>.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>If the editor’s scripting language interoperates well with the surrounding environment, it can be used to control the computer and everything the computer itself controls. You can check in to the environment and hardly ever leave. You can lead your cyber life in it.: email, social media, live chats, streaming audio and video can all be incorporated. Moreover they can all be controlled and customized by you, the lucky user.&nbsp;</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>To a degree, Lively is such an editor. It’s biggest drawbacks are a lack of polish due to lack of engineering resources and that its scripting language is Javascript.</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>Now, imagine that the editor was polished and robust. Even more importantly the code you created in this environment was modular and secure and written in an elegant and principled language. Imagine you could deploy the same code either on the web, or natively on both desktop and mobile. Imagine that the applications built with the language support online and offline use out of the box, automatically synchronizing data and code between clients and servers. Imagine that they have built-in support for collaboration, either syncing in real time or merging offline as required.&nbsp;</span></div>
+<div>
+<span></span><br></div>
+<div>
+<span>Of course, it is the vision of such a language and platform that has always motivated the <a href="http://www.newspeaklanguage.org/" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>Newspeak</span></a> project.&nbsp; I have discussed many of these points before. In particular, I’ve talked about the weaknesses of traditional IDEs (see for example <a href="http://gbracha.blogspot.com/2008/11/dynamic-ides-for-dynamic-languages.html" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>this post</span></a> and <a href="http://gbracha.blogspot.com/2008/06/incremental-development-environments.html" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>this one</span></a>), and the need for a platform that supports synchronization over the net (<a href="http://gbracha.blogspot.com/2007/03/sobs.html" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>here</span></a> and  <a href="Javascrypt.html">again here</a>) for a long time. Yet the message bears repeating.&nbsp;</span></div>
+<br>
+<div>
+<span></span><br></div>
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

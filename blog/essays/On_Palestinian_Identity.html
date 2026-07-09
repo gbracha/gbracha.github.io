@@ -1,0 +1,95 @@
+<div class = "ampleforthDocumentClass" name = "On_Palestinian_Identity" classBody = "() (
+) : (
+)
+" </div><div class = "ampleforthDocumentBody"><body><div class="self_ampleforth" contenteditable="false" style="border: 2px solid blue; resize: horizontal; overflow: auto; overflow-wrap: break-word; width: 40em;" onkeyup="updateRawHTML()" ondragover="((e) => {e.preventDefault();})(event)" ondrop="((e) => {
+              e.preventDefault();
+            // Calculate the drop position within the text
+            const range = document.caretRangeFromPoint(e.clientX, e.clientY);
+            // Create a new text node to separate the image from the surrounding text
+            const textNode = document.createTextNode('\u00A0'); // Non-breaking space
+            // Insert the text node at the calculated position
+            range.insertNode(textNode);
+            // Loop through dropped files
+            for (const file of e.dataTransfer.files) {
+                if (file.type.startsWith('image/')) {
+                     // The downside here is that image data ends up in the HTML file. The file is thus self contained, but bloated.
+                    // This does not scale well. An alternative is to create an in-memory URL for the file, like so:
+                    //const imageUrl = window.URL.createObjectURL(file);
+                    // Then, rather than creating a File Reader etc., we can just set the image element src field to the URL we created:
+                    // imageElement.src = imageURL
+                    // The problem here is that the URL will not persist beyond the lifetime of the dynamic document, so saving the HTML
+                    // yields a broken reference - the URL is not valid anymore.
+                    // So we would need to convert the URL to something permanent when saving the document - say copying its data into 
+                    // a zip file that contained both the HTML and its dependencies. When loading, we'd need to revise the image URLs
+                    // to new ones created from the zip data.
+                    const imageElement = document.createElement('img');
+                    imageElement.style.maxWidth = '300px';
+                    //imageElement.style.maxHeight = '100px';
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        imageElement.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                    // Insert the image after the text node
+                    textNode.after(imageElement);
+                }
+            }
+  })(event)"> <!-- self_ampleforth -->
+  <h1>Palestinian Identity</h1><h3><i>Gilad Bracha</i></h3><div><div><i>TL; DR</i></div><div><i><br></i></div><div><i>Palestinian identity is a side effect of Zionism; it never existed prior to the early 20th century, and only came into being as a response to Zionism.</i></div><div><br></div><div><br></div><div>Golda Meir once held that there was no such thing as the Palestinian People.&nbsp; And yet, they seem to exist. Yet Golda was not entirely mistaken. There is absolutely no historical record of a palestinian nation, or state, or ethnicity at any time from the big bang until the 20th century.</div><div><br></div><div>Evidently, the palestinian identity has come into being in the past 100 years or so. This provides an interesting case study in the creation and evolution of group identity. The fact that such identities materialize, seemingly ex nihilo, should not be that surprising. After all, no modern nation existed ten thousand years ago, yet they all had to come into being somehow.</div><div><br></div><div>The case of the palestinians is interesting because their identity was created so recently. A bit of history is instructive here:</div><div><br></div><div>When Israel was established in 1948, the armies of Egypt, Jordan, Lebanon, Syria and Iraq invaded in contravention of the UN decision establishing Israel. Once defeated, they demanded a ceasefire, and the armistice lines in 1949 became Israel's borders (though the Arabs refused to recognize them as permanent).&nbsp; The result was that Gaza was held by Egypt,&nbsp; and the west bank by Jordan. They held these areas for 19 years, until 1967. At no point during those 19 years did anyone in the Arab world even suggest that these territories be made into a palestinian state.&nbsp; The interest in creating a palestinian state in those areas only appears when these places are under Israeli control.&nbsp;</div>
+  <div><br></div>
+  <div>
+  Earlier in the 20th century, we know that the British had promised Faisal of Arabia a kingdom in Damascus, while also promising what are now Israel and Jordan to the zionists. Faisal and his brother Abdullah met with Chaim Weizmann and were in fact willing to accept this arrangement.&nbsp; Ultimately, the British reneged on all their commitments, handing Syria and Lebanon to the French, Jordan to Abdullah and Iraq to Faisal. They kept Israel, and the local Arab population started to become violent, focusing its attacks on the Jews. The <a href="https://en.wikipedia.org/wiki/1920_Nebi_Musa_riots">Nebi Musa riots</a> of 1920 and the&nbsp; <a href="https://en.wikipedia.org/wiki/Jaffa_riots">Jaffa riots</a> of 1921 are probably the earliest. This is where the idea of a separate Arab polity in Israel (aka Palestine) starts to appear. It is focused from its inception on preventing the establishment of a Jewish state, and eventually evolves into the idea of a distinct palestinian nation.</div>
+  <div><br></div>
+  <div>
+  Even before Nebi Musa, we might look at the battle of <a href="https://en.wikipedia.org/wiki/Battle_of_Tel_Hai">Tel Hai</a>.&nbsp; This clash was between zionist settlers and local Arabs led by officers of Faisal's army. In other words, the local Arabs did not consider themselves and their national movement distinct from Arabian/Syrian/Lebanese Arabs.</div><div><br></div><div>As late as 1941, after the 1929 massacre in Hebron and the 1936 arab rebellion in British-mandate Israel, the Mufti of Jerusalem, Haj Amin Al Husseini, the chief leader of the Arab community, told Hitler that he seeks "to unify Syria, Iraq and Palestine" [2] (while also agreeing with Hitler on the goal of annihilation of Jews in the middle east). In other words, even in the early 1940s, the idea of a Palestinian nation did not yet exist.</div><div><br></div><div>Consider furthermore a thought experiment where zionism never existed, there was no influx of Jewish immigration into the territory that some call Palestine (see [1] below on the historical roots of the name Palestine) and others call Israel. In this thought experiment, there are only a small group of jews living in Israel, devoid of any political or military power, just as they have been since 135 AD until the advent of zionism. Israel would have been taken over by the British in 1917 as the Ottoman empire collapsed just the same. When they retreated, they would have likely handed it over to Abdullah, just as they had handed over Jordan (which was also part of&nbsp; the historical kingdom of Israel, FWIW). Abdullah would no more hand the land over to the local peasants and tribesmen than he did the west bank.&nbsp;</div><div><br></div><div>What this clearly demonstrates is that palestinian identity grew out of an Arab immune response to zionism, and gradually separated into a distinct identity.&nbsp; Palestinian identity is in fact, a side-effect of zionism. Because it has been entirely based on violence and terrorism and has probably been more harmful to the palestinians themselves, I would consider it a high toxicity immune response.&nbsp;&nbsp;</div><div><br></div><div><br></div><div>[1]&nbsp; Israel was a roman province in the 1st and 2nd centuries, and in 135 AD was renamed from Judea&nbsp; (derived from the hebrew Yehuda, the same root as the word jew) to Syria Palestina after suppressing the 2nd Jewish revolt against the Romans. The likely cause of the renaming was to undermine the identity and status of the rebellious jews. While the Roman intent can be debated, it has certainly had that effect.&nbsp; Subsequently, Israel has often been referred to as Palestine. The Arab palestinians take their name from that, though Arabs only arrived in the area in the 7th century.</div><div><br></div><div>The word Palestine itself is derived from the word philistines, a people who lived on the mediterranean coast of Israel and were part of a larger group known as the sea peoples, who invaded parts of the eastern mediterranean in the latter half of the 2nd millennium BC.&nbsp; These people were long gone by Roman times. Below is an ultra-brief summary of the history.</div><div><br></div><div>The oldest historical name for Israel is Canaan, as mentioned in the Hebrew Bible. The Israelites took over much of it, establishing the kingdom of Israel. Initially they settled inland, leaving the coast in the hands of the Philistines. The philistine territory was known as Philistia. Eventually the philistines, like the Canaanites before them, disappeared (i.e., were either wiped out, exiled or assimilated).</div><div><br></div><div>Without getting into archaeological controversies over the accuracy of the Hebrew bible, it is clear that at some point there were two Israelite/Jewish kingdoms, Israel in the north and Judah in the south. The Assyrian empire wiped out the northern kingdom (722 BC). Judah was conquered by the Babylonians (586 BC). A renewed unified&nbsp; kingdom was established by the Maccabees in the 2nd century BC. Eventually Israel became a Roman province named Judea, where, among other things, Christianity originated out of Judaism.</div><div><br></div><div>[2] See <a href="https://www.ucpress.edu/book/9780520060227/hitler-and-the-final-solution">Hitler and the Final Solution</a><a> by Gerald Fleming for the official transcript of their conversation.</div><div><br></div></div><div><br></div>    <script>
+
+        const textContainer = document.querySelector('p');
+</div></div></script></div></body></div>   <script type="text/javascript">
+      function scheduleTurn(timeout) {
+        if (timeout >= 0) {
+          setTimeout(function() {
+            var timeout = Module._handle_message();
+            scheduleTurn(timeout);
+          }, timeout);
+        }
+      }
+
+      var Module = {
+        noInitialRun: true,
+        noExitRuntime: true,
+        onRuntimeInitialized: function() {
+          var url = new URLSearchParams(window.location.search);
+          var request = new XMLHttpRequest();
+          request.open("GET", url.get("snapshot"), true);
+          request.responseType = "arraybuffer";
+          request.onload = function (event) {
+            var jsBuffer = new Uint8Array(request.response);
+            var cBuffer = _malloc(jsBuffer.length);
+            writeArrayToMemory(jsBuffer, cBuffer);
+            Module._load_snapshot(cBuffer, jsBuffer.length);
+            _free(cBuffer);
+            scheduleTurn(0);
+          };
+          request.send();
+        },
+        print: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.log(text);
+        },
+        printErr: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.error(text);
+        },
+        setStatus: function(text) {
+          console.log(text);
+        },
+      };
+    </script>
+<script async type="text/javascript" src="primordialsoup.js"></script>
+    <script src="CodeMirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="CodeMirror/lib/codemirror.css"></link>
+    <script src="CodeMirror/addon/display/autorefresh.js"></script>

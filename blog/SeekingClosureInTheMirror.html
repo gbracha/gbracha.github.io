@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>SeekingClosureInTheMirror</title></head><body data-ampleforth-doc="SeekingClosureInTheMirror"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on July 23rd, 2012</i></h3></div>
+    <h1>Seeking Closure in the Mirror</h1>
+<br>
+<div>
+<span>I've discussed mirror based reflection many times in the past, in this&nbsp;<i><a href="ThroughTheLookingGlassDarkly.html">blog</a>&nbsp;</i>and in&nbsp;</span><i><a href="http://www.hpi.uni-potsdam.de/hirschfeld/events/past/media/100105_Bracha_2010_LinguisticReflectionViaMirrors_HPI.mp4" contenteditable="false" target="_blank" rel="noopener noreferrer">talks</a>. </i><span>And of course I'm not the only one - you can &nbsp;read Alan Wirf-Brock's &nbsp;</span><span><a href="http://www.wirfs-brock.com/allen/posts/228" contenteditable="false" target="_blank" rel="noopener noreferrer">posts</a>&nbsp;on mirrors in Javascript. In this post, I want to focus on a particular kind of mirror that has not received much attention. Before I get to deep into the details, a few words of background.</span></div>
+<div>
+<span></span></div>
+<div>
+<br></div>
+<br>
+<div>
+<span>You cannot get at the internals of a function: you can only apply it to various arguments and see how it responds. This is sometimes known as <i>procedural abstraction</i>. Among other things, it is the basis for object-based encapsulation.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Most languages that call themselves object-oriented do not actually support object-based encapsulation. One of the ways they get by despite this defect is to&nbsp; rely on procedural abstraction directly. Perhaps the most notable example of this is Javascript. The only way to encapsulate anything in Javascript is to put it inside a function. Elaborate design patterns leverage Javascript’s closures to provide encapsulation.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>You can see from the above that procedural abstraction is absolutely fundamental. There appear to be circumstances where we might nevertheless might wish to breach the defenses of procedural abstraction.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Consider implementing a database interface in the style of LINQ, or Ruby on Rails, or <a href="http://www.glorp.org/" contenteditable="false" target="_blank" rel="noopener noreferrer"><span>Glorp</span></a>. The underlying model is that the database consists of collections, and that these collections are accessed via standard functional operations such filter, map, reduce etc.&nbsp; The arguments to these operations include closures. For example, you might write a query such as:</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span></span></div>
+<div>
+<span><span>cities.filter(function(city){return city.name = ‘Paris’;});</span></span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>and get back a collection of answers that included Paris, Texas, and perhaps some other cities. To implement this interface on top of a database, you might want to transform this code into a SQL query.&nbsp; To do that you need to understand what the closure is doing. In .Net, for example, the type system is designed to coerce a literal closure into an abstract syntax tree representing the expression inside it, which can then be compiled into SQL.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Of course, it might be that you cannot reasonably compile the code into a SQL query at all.&nbsp; We will assume that the system is allowed to fail in any case it deems too hard, but we’d like to cope with as many situations as we can.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>The LINQ approach relies on static typing, but this is not essential, and in fact has drawbacks.</span></div>
+<div>
+<span>For example, the static approach precludes the following:</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><span>query(f) {return cities.filter(f);}</span></span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>A more general alternative is to dynamically derive the AST of the closure body. Regardless, it seems I need a way to get the AST (or at least the source) of a closure - something that procedural abstraction is of course designed to preclude.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Even if I can get the source or AST, that isn’t always enough. Suppose I want to write</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><span>var cityNames = [‘Paris’, ‘London’, ‘New York’];</span></span></div>
+<div>
+<span><span>cities.filter(function(city){</span></span></div>
+<div>
+<span><span>&nbsp; &nbsp; return cityNames.contains(city.name)</span></span></div>
+<div>
+<span><span>});</span></span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>I need the value of <span>cityNames</span> in order to execute the query.&nbsp; In general, I need to get at the scope of the executing closure.&nbsp;</span></div>
+<div>
+<br></div>
+<div>
+<span>Smalltalk and its relatives allow you to do this. How do they get around procedural abstraction? Well, in the case of closures, they basically throw procedural abstraction out the door. Every Smalltalk closure will gladly provide you its context, which is a reified scope that will allow you to find out what all the variables used in the closure are.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Obviously, this is not a very secure solution.&nbsp;</span><span>One way we can usually reconcile security and reflection is via mirrors, and that is the focus of this post. &nbsp;Given an object mirror that has full access to the closure object's representation, you should be able to get all the information you need. &nbsp;This still has the drawback that the representation of closures is exposed as a public API.&nbsp;</span></div>
+<div>
+<span><br></span></div>
+<div>
+In this case, we want a&nbsp;<span>ClosureMirror</span>. Essentially, there needs to be an object with the magical ability to see into the closure, overcoming procedural abstraction.&nbsp;&nbsp;The closure itself must not allow this; it must be impenetrable. The capability to look inside it must be a distinct object that can be distributed or withheld independently&nbsp;<span>(exercise for the reader: find another way to solve this problem).</span></div>
+<div>
+<br></div>
+<div>
+<span>Concretely, a <span>ClosureMirror</span> needs to able to provide the source code of the closure it is reflecting and a map from identifiers to values that describes the closure’s current scope.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>Another situation where closure mirrors would be handy is serialization. If you need to serialize an object that includes a closure, you again need access to the closure’s scope.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span>I have not seen closure mirrors discussed elsewhere. As far as I know, the only implementation was done as part of the Newspeak-to-Javascript compiler.&nbsp;</span><span>We are also considering it in the context of the Dart mirror system. &nbsp;</span><span>&nbsp;The Newspeak-on-Javascript implementation of closure mirrors is rather naive and inefficient. &nbsp;One reason for this inefficiency is that Javascript provides no support whatsoever to do this sort of thing. In any case, the idea is new and virtually untested, but I think it has potential.</span></div>
+<div>
+<span><br></span></div>
+<div>
+<span><br></span></div>
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

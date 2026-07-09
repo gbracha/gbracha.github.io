@@ -1,0 +1,36 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>DeadProgramsSociety</title></head><body data-ampleforth-doc="DeadProgramsSociety"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on May 29th, 2017</i></h3></div>
+    <h1>Dead Program's Society</h1>
+In my <a href="https://gbracha.github.io/illiterateProgramming/out/illiterateProgramming.html" contenteditable="false" target="_blank" rel="noopener noreferrer">last post</a>&nbsp;I discussed live literate programming. I concluded the post by noting that the approach I had discussed had one glaringly obvious flaw. No one seems to have pointed out that flaw, so I was forced to point it out myself, in my <a href="https://youtu.be/HW7sqMjTkI0" contenteditable="false" target="_blank" rel="noopener noreferrer">Programming 17 keynote</a>.  The recording of the talk was a bit deficient, in that the camera operator focused on me rather than on the screen. Alas, I am not nearly as interesting as the screen; the screen was where all the action, demos etc. took place. To rectify that, this post will include a few video snippets that should be very close to the demos given in the talk.<br>
+<br>
+But first, what of the glaring flaw?
+
+The flaw is that the mechanism I described for creating literate programs using <a href="https://www.madoko.net/" contenteditable="false" target="_blank" rel="noopener noreferrer">Madoko</a> and Ampleforth was not compositional. It allowed for embedding live widgets inside rich text, but only at one level. The widgets themselves would contain text, but there wasn't a way to include widgets in that embedded text recursively. If only the rich text editor could treat itself as a widget that it could self-embed, the system would compose to arbitrary depth.<br>
+<br>
+Sadly, non-compositional text editors are the norm. Most widget sets have some sort of text widget, but that widget typically traffics in text only.  Over twenty years ago, the <a href="http://www.strongtalk.org/" contenteditable="false" target="_blank" rel="noopener noreferrer">Strongtalk</a> system addressed this problem (and we were by no means the first to do so). I demo'ed this in my talk: here's a <a href="https://www.youtube.com/watch?v=5jRQcs9gx3Y" contenteditable="false" target="_blank" rel="noopener noreferrer">brief video recreating the main points of that demo</a>.<br>
+<br>
+The demo shows the embedding of live IDE components in both the ordinary text editors used to edit code, and in rich text generated from markup. One open question is when to use either approach, or how to integrate them. Another point I highlight is the failure of liveness in instance methods, something I've discussed in <a href="MakingMethodsLive.html">previous posts</a>. Having raised that problem, I moved on to showing my approach to solving it by demoing <a href="https://www.youtube.com/watch?v=Yv7yX27Tx4U" contenteditable="false" target="_blank" rel="noopener noreferrer">Newspeak's exemplar mode</a>.<br>
+<br>
+The Strongtalk demo emphasized literate programming issues; the <a href="http://newspeaklanguage.org/" contenteditable="false" target="_blank" rel="noopener noreferrer">Newspeak</a> demo focused on liveness. Ampleforth is aimed at addressing both of these, and so I went on to demonstrate Ampleforth, the system I described in my <a href="https://gbracha.github.io/illiterateProgramming/out/illiterateProgramming.html" contenteditable="false" target="_blank" rel="noopener noreferrer">prior post</a>. In the talk, I showed Ampleforth embedded in the presentation itself. Here's <a href="//www.youtube.com/watch?v=eBuiL6asa5Y" contenteditable="false" target="_blank" rel="noopener noreferrer">a recording of essentially the same thing.</a><br>
+<br>
+Obviously, one cannot embed live programs in conventional presentation tools like PowerPoint or Keynote (or Prezi, for that matter). Instead, the presentation was built using <a href="https://leisure.handmade.network/" contenteditable="false" target="_blank" rel="noopener noreferrer">Lounge</a>, a system being developed by Bill Burdick. Bill shares a very similar vision for live literate programming, which he calls Illuminated programming. He uses Lounge to run Leisure, a purely functional, lazy language. Lounge certainly lacks the visual polish of commercial tools, but unlike those tools, its fundamental architecture is sound. A Lounge document (such as a presentation) is defined using emacs's <a href="http://orgmode.org/" contenteditable="false" target="_blank" rel="noopener noreferrer">Org mode</a> format. Some adjustments were necessary to embed Ampleforth into Lounge - basically setting things up to run within an IFrame; these tweaks should make it easier to embed Ampleforth into other web based tools as well.<br>
+<br>
+What of our glaring flaw?  The flaw is not in Ampleforth itself. Rather, it lies in the text editors in which it is embedded and those which are embedded in the widgets we use. Fortunately, the DOM actually does better in this fundamental respect, and so on the web, this is fixable. Unfortunately, the web's basic text editing facility, content-editable text, is all but unusable.
+Lounge itself has a text editor that doesn't suffer from this weakness. In principle, we could access the Lounge editor from Newspeak, but in this case we embedded Ampleforth with its rudimentary editor (based on content-editable text).  I'm planning to modify Newspeak's web environment to use CodeMirror as its default editor, which should help as well.<br>
+<br>
+An important question that came up in the Q&amp;A was whether liveness was actually desirable. After all, the code is supposed to be correct for all possible inputs, and relying on examples rather than abstract reasoning and proofs might be dangerous. My response was that liveness takes nothing away - you can go prove invariants to your heart's content. Liveness can be abused, but overall it makes people more productive by reducing the cycle between specifying intent and measuring actual results.<br>
+<br>
+Dave Ungar later gave another, even better answer: that invariants themselves should be reified in the environment, so we can &nbsp;remember them all, communicate them to others, ask them to monitor the program to see if they are violated etc.<br>
+<br>
+To Life, Literacy and the Pursuit of Happiness!<br>
+<br>
+<br>
+<div><br></div><div><br></div>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

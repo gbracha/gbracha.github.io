@@ -1,0 +1,21 @@
+Colorizer     : newspeak
+~Code,~Pre    : language=newspeak
+
+.Pre-indented : input=markdown 
+                replace='/[\s\S]*/~Evaluator&nl;\0&nl;~&nl;```newspeak{.pre-eval}&nl;\0&nl;```&nl;/'
+~Evaluator    : margin-top=1em margin-bottom=1em
+                html-expression=&source; replace=/[\s\S]*//                                 
+@tex ~Evaluator: display=none
+
+.Pre-eval     : padding=0.5ex
+                border-style=solid border-color=black border-width=1px
+
+Html Header   : <style>
+                .evaluator + pre {
+                  display: none; 
+                }
+                .preview .evaluator + pre {
+                  display: block;
+                }
+                </style>
+Html Footer   :  <script type="text/javascript" class="preview" src="Ampleforth.sources.js"></script><script type="text/javascript" class="preview" src="Ampleforth.js"></script>

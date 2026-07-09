@@ -1,0 +1,190 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"/><title>ADSLWithAView</title></head><body data-ampleforth-doc="ADSLWithAView"><div id="ampleforth-ssr">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on November 28th, 2014</i></h3></div>
+    <h1>A DSL with a View</h1>
+In a previous post, I promised to explain how one might define UIs using an internal DSL. Using an internal DSL would allow us to capitalize on the full power of a general purpose programming language and avoid having to reinvent everything from if-statements to imports to inheritance.<br>
+<br>
+Hopscotch, Newspeak's UI framework, employs such an internal DSL. &nbsp;Hopscotch has been discussed in a <a href="http://bracha.org/hopscotch-wasdett.pdf" contenteditable="false" target="_blank" rel="noopener noreferrer">paper</a> and in a <a href="http://download.microsoft.com/download/e/7/7/e77a8fce-0362-4930-bd5e-8a21ec77e38d/giladbracha.mp4" contenteditable="false" target="_blank" rel="noopener noreferrer">talk</a>. &nbsp;It will take more than one post to describe Hopscotch; here we will focus on its DSL, which is based on the notion of <i>fragment combinators</i>.<br>
+<br>
+<i>Fragments</i> describe pieces of the UI; they may describe individual widgets, or views constructed from multiple pieces, each of which is in turn a fragment. A fragment combinator is then a method that produces a fragment, possibly from other fragments.<br>
+<br>
+One of the simplest fragment combinators would be <i>label:</i>, which takes a string. The expression<br>
+<br>
+<i><span>label: 'Hello Brave New World'&nbsp;</span></i><br>
+<br>
+would be used to put up the string "Hello Brave New World" on the screen. &nbsp;Other examples might be<br>
+<br>
+<span><i>button: 'Press me' action: [shrink]</i></span><br>
+<br>
+which will display a button<br>
+<div>
+<br></div>
+<br>
+<div>
+<a href="./images/buttonExample1.jpg" contenteditable="false" target="_blank" rel="noopener noreferrer"><img src="blob:http://localhost:8080/b4b1e57f-493f-44b9-9b61-e57fca535281" name="buttonExample1.jpg"></a></div>
+<br>
+that will call the method <i>shrink</i> when invoked. &nbsp;The combinator <i>button:action:</i> takes two arguments - the first being a string that serves as the label of the button, and the second being a closure that defines the action taken when the button is pressed. Closures in Newspeak are delimited with square brackets, and need not provide a parameter list if no parameters are required. &nbsp;This is the most lightweight syntax for literal functions you will find. Along with the method invocation syntax, where method names embed colons to indicate where arguments should be placed, this gives a very readable notation for many DSLs.<br>
+<br>
+Further examples:<br>
+<br>
+<span><i>row: {</i></span><br>
+<span><i>&nbsp; button: 'Press me' action: [shrink].&nbsp;</i></span><br>
+<span><i>&nbsp; button: 'No, press me' action: [grow].</i></span><br>
+<span>}</span><br>
+<br>
+The <i>row:</i> combinator takes a tuple of fragments (tuples in Newspeak are delimited by curly braces, and their elements are separated by dots) as its argument and lays out the elements of the tuple horizontally:<br>
+<br>
+<div>
+<a href="./images/buttonExample2.jpg" contenteditable="false" target="_blank" rel="noopener noreferrer"><img src="blob:http://localhost:8080/c37ebdc9-8993-4513-a2ec-e7920e9ec3d9" name="buttonExample2.jpg"></a></div>
+<br>
+the <i>column:</i> combinator is similar, except that it lays things out vertically<br>
+<br>
+<span><i>column: {</i></span><br>
+<span><i>&nbsp; button: 'Press me' action: [shrink].&nbsp;</i></span><br>
+<span><i>&nbsp; button: 'No, press me' action: [grow]</i></span><br>
+<span><i>}</i></span><br>
+<br>
+produces:<br>
+<br>
+<div>
+<a href="./images/buttonExample3.jpg" contenteditable="false" target="_blank" rel="noopener noreferrer"><img src="blob:http://localhost:8080/4a2c20d0-c371-4d18-864c-10fb782ef090" name="buttonExample3.jpg"></a></div>
+<br>
+<br>
+In mainstream syntax (Dart, in this case) the example could be written as<br>
+<br>
+<span><i>column(</i></span><br>
+<span><i>&nbsp; [button('Press me', ()=&gt; shrink),&nbsp;</i></span><br>
+<span><i>&nbsp; &nbsp;button('No, press me', () =&gt; grow)]</i></span><br>
+<span><i><span>&nbsp;)</span></i></span><br>
+<br>
+The Newspeak syntax is remarkably readable though, and its advantage over mainstream notation becomes more pronounced as examples grow. Of course none of this works at all if your language doesn't support both closures and literal lists/arrays.<br>
+<br>
+So far, this is very standard stuff, much like building a tree of views in most systems. &nbsp;In most UI frameworks, we'd write something like<br>
+<br>
+<span><i><b>new</b>&nbsp;Column([<b>new</b>&nbsp;Button('Press me', ()=&gt; shrink),&nbsp;</i></span><br>
+<span><i><b>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; new</b>&nbsp;Button('No, press me', () =&gt; grow)]</i></span><br>
+<span><i>&nbsp; &nbsp; )</i></span><br>
+<br>
+which is less readable and more verbose. &nbsp;Since allocating an instance is more verbose than calling a method in most languages, the fact that fragment combinators are represented via methods, which act as factories for various kinds of views, helps make things more concise. It's a simple trick, but worth noting.<br>
+<br>
+The advantage of thinking in terms of fragments becomes clearer once you consider &nbsp;less obvious fragments such as&nbsp;<i>draggable:subject:image:</i>, which takes a fragment and allows it to be dragged and dropped. Along with the fragment, it takes a subject (what you might call a controller) and an image to use during the drag. Making drag-and-drop a combinator means <b>everything</b> is potentially draggable. Conventional designs would make this a special attribute of certain things only, losing the compositionality that combinators provide.<br>
+<br>
+<i>Presenters</i> are a a specific kind of fragment that is especially important. Presenters provide user-defined views in the Model-View-Controller sense. &nbsp;To define your own view, you subclass <i>Presenter</i>. Because&nbsp;presenters are fragments, any&nbsp;user defined view can be part of a predefined compound fragment like&nbsp;<i>column:</i>&nbsp;or&nbsp;<i>draggable:subject:image:</i>.<br>
+<br>
+A presenter has a method&nbsp;<i>definition</i>&nbsp;which computes a fragment tree which is used to render the presenter.&nbsp;The fragment DSL we discussed is used inside of presenters. All the combinators are methods of <i><span>Presenter</span></i>, so they are inherited by any class implementing a view, and are therefore in scope inside a presenter class. &nbsp;In particular, combinators are available in the <i>definition</i> method.<br>
+<br>
+To see how all this works, imagine implementing the well known <b>todoMVC</b> example. &nbsp;We'll define a subclass of&nbsp;<i>Presenter</i>&nbsp;called&nbsp;<i>todoMVCPresenter</i>&nbsp; to represent the todoMVC UI. &nbsp;The UI is supposed to present a list of todo items. It consists of a column with:<br>
+<br>
+<br>
+<ol>
+<li>A header in large text saying "todos"&nbsp;</li>
+<li>An input &nbsp;zone where new todos are added.</li>
+<li>A list of todos, which can be filtered using controls given in (4).&nbsp;</li>
+<li>A footer, that is empty if there are no todos at all. It materializes as a set of controls once there are todos.</li>
+</ol>
+<br>
+<div>
+We can translate these requirements directly:</div>
+<div>
+<div>
+<br></div>
+<div>
+<span><i>definition = (</i></span></div>
+<div>
+<span><i>&nbsp; &nbsp; &nbsp;^column: {</i></span></div>
+<div>
+<span><i>&nbsp; &nbsp; &nbsp; (label: 'todos') hugeFont.</i></span></div>
+<div>
+<span><i>&nbsp; &nbsp; &nbsp; inputZone.</i></span></div>
+<div>
+<span><i>&nbsp; &nbsp; &nbsp; todoList.</i></span></div>
+<div>
+<span><i>&nbsp; &nbsp; &nbsp; footer.</i></span></div>
+<div>
+<span><i>&nbsp; &nbsp; &nbsp;}</i></span></div>
+<div>
+<span><i>)</i></span></div>
+<div>
+<span><i><br></i></span></div>
+<div>
+<b>More notes on syntax:</b> &nbsp;<i>methods are defined by following their header with an equal sign and a body delimited by parentheses;&nbsp;<span>^</span> signifies <b>return</b>; method invocations that take no parameters list no arguments, e.g., inputZone, not inputZone(); chained method invocation does not require a dot - so it's&nbsp;</i></div>
+<div>
+<i><span>(label: 'todos') hugeFont</span><span>&nbsp;</span>rather than&nbsp;label('todos').hugeFont.</i></div>
+<div>
+<br></div>
+<div>
+We haven't yet specified what&nbsp;<i>inputZone</i>, <i>todoList</i> and <i>footer</i>&nbsp;do. They are all going to be defined as methods of&nbsp;<i>todoMVCPresenter</i>. &nbsp;We can&nbsp;define the UI in such a top down fashion&nbsp;&nbsp;because we are working with a language that supports&nbsp;procedural abstraction. You get it for free in an internal DSL. &nbsp;</div>
+<div>
+<br></div>
+<div>
+We can then define the pieces, such as</div>
+<div>
+<br></div>
+<div>
+<div>
+<i><span>footer = (</span></i></div>
+<div>
+<i><span>&nbsp;^subject todos isEmpty&nbsp;</span></i></div>
+<div>
+<i><span><span> </span>&nbsp;ifTrue: [nothing]</span></i></div>
+<div>
+<i><span><span> </span>&nbsp;ifFalse: [controls]</span></i></div>
+<div>
+<i><span>)</span></i></div>
+</div>
+<div>
+<br></div>
+<div>
+Here, we use conditionals to determine what view to produce, depending on the state of the application. &nbsp;The application logic is embodied in the controller, <i>subject</i>, which we query for the<i> todos</i> list<i>.</i>&nbsp;The <i>nothing</i> combinator does exactly what it says; <i>controls</i> is a method we would have to define in&nbsp;<i>todoMVCPresenter</i>, detailing what should appear in the footer if it is visible. &nbsp;Again, the code corresponds closely to the natural language description in bullet (4) above.</div>
+<div>
+<br></div>
+<div>
+To elaborate <i>todoList</i> we'll need a loop or recursion or something of that nature; in fact, we'll use the higher order method&nbsp;<i>collect:</i>, which is Newspeak's version of <i>map</i>.&nbsp;</div>
+</div>
+<div>
+<br></div>
+<div>
+<span><i>todoList = (^list:[subject todos collect: [:todo | todo presenter]])</i></span></div>
+<br>
+<span>The </span><i>list:</i><span> combinator packages a list of fragments into a list view. We pass<i> list:</i> a closure that computes the list to todo items.&nbsp;</span><br>
+<span><br></span>
+<span><i><b>Aside</b>: We could have passed it the list itself, computed eagerly. Often, fragment combinators take either suitable fragment(s) a closure that would compute them.</i></span><br>
+<span><br></span>
+<span>To compute the fragment list </span>we compute a presenter for each individual todo item by mapping over the original list of todos.<br>
+The closure we pass to <i>collect:</i> takes a single parameter, <i>todo</i>. Formal parameters to closures are introduced prefixed by a colon, and separated from the closure body by a vertical bar.<br>
+<br>
+What are the odds that higher order functions (HOFs) were part of your external DSL? Even if they were, one would have to define a suite of useful &nbsp;HOFs. One should factor the cost of defining useful libraries into any comparison of internal and external DSLs.<br>
+<br>
+The Hopscotch DSL has other potential advantages. Because fragment combinators are methods, you can override them to customize their behavior.<br>
+We believe we can leverage this &nbsp;to customize the appearance of things, a bit like CSS. To make this systematic, we expect to define whole groups of overrides in mixins. I'm not showing examples where Hopscotch is used this way because we have done very little in that space (and this post is already too long anyway). And we haven't spoken about the other advantages of Hopscotch. <br>
+such as its navigation model, lack of modality and very clean embodiment of MVC.<br>
+<div>
+<br></div>
+Ok, now it's time for the caveats.<br>
+<br>
+<br>
+<ol>
+<li>First and foremost, &nbsp;Hopscotch currently lacks a good story for reactive binding. &nbsp;In our example, that means you'd have to put explicit logic to refresh the display in some of the controls. &nbsp;This makes things less declarative and harder to use. We always planned to solve that problem; I hope to address it in a later post. &nbsp;But the high order bit is that we have code in a general purpose language that gives a very readable, declarative description of the UI. It corresponds directly to the natural language description of the requirements.</li>
+<li>Hopscotch lacks functionality in order to support richer UIs, but the design is naturally extensible: one adds more fragment combinators.</li>
+<li>We also want more ports, especially to mobile/touch platforms. However, Hopscotch has already proven quite portable: it runs on native Win32, on Squeak's Morphic and on HTML (the latter port is still partial, but that is just an issue of engineering resources). &nbsp; More ports would help us deal with another controversial goal - defining a UI platform that works well across OS's and devices.</li>
+</ol>
+<br>
+<br>
+Regardless of the current engineering limitations, the point here is simply to show the advantages of a well-designed internal DSL for UI. &nbsp;The lessons of Newspeak and Hopscotch apply to other languages and systems, albeit in an attenuated fashion.<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+</div></div><script src="deploy-boot.js"></script></body></html>

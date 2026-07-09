@@ -1,0 +1,17 @@
+public class WYWIWYG contents: c <String> = Document named: #WYWIWYG contents: c () (
+nestedEditor = (
+  ^(ide documents DocumentSubject onModel: (ide namespacing Root at: #LiveAnE_mmanual)) presenter
+)
+unlockButton = (
+  ^button: 'Edit this Essay' action: [
+       enterSubject: (ide browsing ObjectSubject onModel: (platform mirrors ObjectMirror reflecting: self))
+   ]
+)
+makeNestedAmpletButton = (
+  ^nestedEditor makeAmpletButton
+)
+toogleNestedToolbar = (
+  ^nestedEditor toolbarToggle
+)
+) : (
+)

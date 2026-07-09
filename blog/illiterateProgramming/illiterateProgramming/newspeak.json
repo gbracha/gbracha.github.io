@@ -1,0 +1,85 @@
+{
+  "displayName":    "Newspeak",       
+  "name":           "newspeak",
+  "mimeTypes":      ["text/newspeak"],
+  "fileExtensions": ["ns","ns3"],
+  
+  
+  "blockCommentStart": "(*",
+  "blockCommentEnd":   "*)",
+
+  
+  
+
+  "keywords": [
+    "true", "false", "nil",
+    "self", "super", "outer", "thisContext"
+  ],
+  
+  "special": [
+    "Newspeak3",
+    "class", "new", "public", 
+    "manifest", "definition", "deferred", 
+    "ifTrue:", "ifFalse:", "whileTrue:"
+  ],
+
+  
+  "escapes": "\\\\(?:[abfnrtv\\\\\"']|x[0-9A-Fa-f]{1,4}|u[0-9A-Fa-f]{4}|U[0-9A-Fa-f]{8})",
+  
+  
+  "tokenizer": {
+    "root": [
+      
+      ["[A-Z]\\w*(?!:)", "constructor"],
+      ["(:)([a-z_]\\w*)", ["delimiter.colon","identifier"] ],
+
+      ["([a-z_]\\w*)(:?)", { "cases": { 
+         "@keywords": ["keyword","delimiter.colon"],
+         "@special":  ["keyword.special","delimiter.colon"],
+         "$2":        ["type","delimiter.colon"],
+         "@default":  ["identifier","delimiter.colon"] } }],
+      
+      
+      { "include": "@whitespace" },
+      
+      
+      ["[{}()\\[\\]<>]", "@brackets"],
+      
+      
+      ["[\\.]|::=", "keyword" ],
+      ["[;]", "delimiter"],
+      
+      
+      
+      ["\\d+\\.\\d+([eE][\\-+]?\\d+)?", "number.float"],
+      ["0[xX][0-9a-fA-F]+", "number.hex"],
+      ["\\d+", "number"],
+
+      
+      ["'([^'\\\\]|\\\\.)*$", "string.invalid" ],  
+      ["'",  { "token": "string.quote", "bracket": "@open", "next": "@string" } ],
+      
+      
+      ["\\$.", "string"]      
+    ],
+
+    "comment": [
+      ["[^\\(\\*]+", "comment" ],
+      ["\\(\\*",     "comment", "@push" ],    
+      ["\\*\\)",     "comment", "@pop"  ],
+      ["[\\(\\*]",   "comment" ]
+    ],  
+
+    "string": [
+      ["[^\\\\']+",  "string"],
+      ["@escapes", "string.escape"],
+      ["\\\\.",      "string.escape.invalid"],
+      ["'",        { "token": "string.quote", "bracket": "@close", "next": "@pop" } ]
+    ],
+    
+    "whitespace": [
+      ["[ \\t\\r\\n]+", "white"],
+      ["\\(\\*",       "comment", "@comment" ]
+    ]
+  }
+}
