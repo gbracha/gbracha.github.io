@@ -1,0 +1,7 @@
+public class LiveAnE_mmanual contents: c <String> = Document named: #LiveAnE_mmanual contents: c 
+() (
+alertButton = (
+	^button: 'Press Me!' action: [ alert: 'Big Brother is Watching' ]
+)
+) : (
+)
