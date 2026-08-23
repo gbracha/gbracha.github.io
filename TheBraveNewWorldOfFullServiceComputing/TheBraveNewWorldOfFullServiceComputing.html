@@ -1,0 +1,191 @@
+<div class = "ampleforthDocumentClass" name = "TheBraveNewWorldOfFullServiceComputing" classBody = "() (
+) : (
+)
+" </div><div class = "ampleforthDocumentBody"><body><div class="self_ampleforth" contenteditable="true" style="border: 2px solid blue; resize: horizontal; overflow: auto; overflow-wrap: break-word; width: 40em;" onkeyup="updateRawHTML()" ondragover="((e) =&gt; {e.preventDefault();})(event)" ondrop="((e) =&gt; {
+              e.preventDefault();
+            const range = document.caretRangeFromPoint(e.clientX, e.clientY);
+            const textNode = document.createTextNode('\u00A0');
+            range.insertNode(textNode);
+            for (const file of e.dataTransfer.files) {
+                if (file.type.startsWith('image/')) {
+                              const imageElement = document.createElement('img');
+                              imageElement.src = window.URL.createObjectURL(file);
+                              imageElement.style.maxWidth = '300px';
+                              imageElement.name = file.name;
+                              textNode.after(imageElement);
+               }
+               if (file.type.startsWith('video/')) {
+                              const videoElement = document.createElement('video');
+                              videoElement.src = window.URL.createObjectURL(file);
+                              videoElement.style.maxWidth = '300px';
+                              videoElement.controls = true;
+                              videoElement.title = file.name;
+                              textNode.after(videoElement);
+               }
+               if (file.type.startsWith('audio/')) {
+                              const audioElement = document.createElement('audio');
+                              audioElement.src = window.URL.createObjectURL(file);
+                              audioElement.style.maxWidth = '300px';
+                              audioElement.controls = true;
+                              audioElement.title = file.name;
+                              textNode.after(audioElement);
+               }
+            }
+            updateRawHTML();
+  })(event)">
+      <style>
+  .blog{  background-image: url('peeking-eye-16-10.png');
+  background-repeat: no-repeat;
+  }
+  </style>
+  <div class="blog">
+  <h1>Room 101</h1><hr><h3>Gilad Bracha's blog. A place to be (re)educated in Newspeak</h3><div><h3><i style="font-size: 14px; font-weight: normal;">Originally posted on Blogger on April 2nd, 2010</i></h3></div>
+    <h1>The Brave New World of Full Service Computing</h1>
+I’ve been trying to explain <div class="ampleforth" ampletid="1" name="ampleforthLink: 'SOBs' labeled: 'this'" contenteditable="false" style="display: inline-flex;"></div> for some six years with little success, but I’ll try again.  It may be easier this time.<br><br>For the past generation, we have been living in a world of self-service computing, more commonly knows as personal computing. The person using/owning a personal/self service computer is responsible for managing that computer themselves. All the digital chores - installing and updating software,  preventing malware infection, backing up storage etc. are the user’s responsibility. Most users hate that.<br><br>Worse, most users really can’t handle these chores at all.  They run ancient versions of applications because they are deathly afraid to tamper with anything that somehow works. Their computers are warrens of digital disease, crawling with viruses. Their data is rarely backed up properly.<br><br>The evolution of network technology enables a new model: full service computing.  Full service computing means that you abdicate a level of fine control over the computer to a service that handles your digital housekeeping.  I discussed some implications of this in a <div class="ampleforth" ampletid="2" name="ampleforthLink: 'ClosingTheFrontier' labeled: 'post back in January'" contenteditable="false" style="display: inline-flex;"></div>.<br><br>You still choose applications that you want - but you must get them from the service; the service installs these applications for you; it keeps them up to date as long as you use the service; and it it ensures that they are safe to use. The service also backs up your data automagically, allowing you to easily search through old versions as needed. In the extreme case, the service actually provides you with the computers you use. That helps it ensure seamless software/hardware compatibility.<br><br>We can increasingly  see vignettes of this brave new world. Web apps running in the cloud are one step in this direction; web apps storing data locally are a step further. A complete platform designed to hide the raw machine from the user is  even closer to this  vision. Such platforms started out in the world of mobile phones, and are clawing their way upwards from there: Android and iPhone/iPad. Windows 7 mobile is quite similar to the iPhone model (odd, isn’t it?). And ChromeOS is not dissimilar.<br><br><i><b>Tangent:</b> How does Google keep Android and ChromeOS aligned? It doesn’t - I believe they are making it up as they go along. Eventually they should converge.</i><br><br>We still haven't seen an integration of the app store model with backup, but it can't be that far off. An option for MobileMe(insert Apple trademark here) subscribers to have an image of their iPad backed up on Apple's servers and browsable via a Time Machine (and again, Apple trademark) style interface is easy to imagine. This can then extend to data you want to share collaboratively, while still retaining a local copy for offline use.<br><br>In time, most users will gravitate away from the self service computers they use today to software service platforms.  This goes hand in hand with simpler UIs such as the iPad’s. One of the technical features in this evolution is the disappearance of the file system in favor of a searchable database of objects, as I mentioned in <div class="ampleforth" ampletid="3" name="ampleforthLink: 'NailFiles' labeled: 'a previous post'" contenteditable="false" style="display: inline-flex;"></div>.<br><br><i>Tangent: </i><i>The move from personal computing to software services accessed via simpler devices is what is truly significant about the iPad. Those who worry about details such as whether it has a camera or Flash are completely missing the point.</i><br><br>All this is already happening, which makes it easier to explain the idea of <a href="http://bracha.org/objectsAsSoftwareServices.pdf" contenteditable="false" target="_blank" rel="noopener noreferrer">objects as software services</a> (see the <a href="//www.youtube.com/watch?v=_cBGtvjaLM0" contenteditable="false" target="_blank" rel="noopener noreferrer">video</a>) now than in 2004/2005. Consider the trend of programming languages toward a pure object model: all data are objects.<br><br><i>Tangent:</i><i> This is orthogonal to functional programming. Objects can be immutable, as in, e.g., Avarice.</i><br><br>So, we now have programs dealing with objects in primary storage running on platforms  whose secondary storage consists of objects as well. Initially, programmers find that they must explicitly manage the transition of data from primary to secondary storage.<br><br>The programmer’s task is simplified if that transition can be automated. This is an old idea known as orthogonal persistence.  The Achilles’ heel of orthogonal persistence was the divergence of in-memory data representation and persistent data representation.  This argued for manual management of the transition between primary and secondary storage.<br><br>However, circumstances are changing. The difference between transient (in-memory) and persistent (secondary storage) representations was driven by several factors, none of which apply in the full service computing model.<br><br>The first factor was that programs changed their internal representation while persistent data lived forever. Orthogonal persistence broke down when old data became incompatible with program data structures.<br><br>In our brave new world, programs co-evolve with their data so this is not an issue. The service manages both the application and secondary storage, updating them in lock step. Thus, we have data that is not only orthogonally persistent, but orthogonally synchronized.<br><br>The second factor was that persistent data formats were a medium of exchange between different programs with different internal data representations. This relied on the file system, may it rest in peace.  The new applications are in fact compelled to keep their persistent data in silos tied to the application, and communicate with other applications in constrained ways.<br><br>This sets the stage for a model where programs are written in a purely object oriented language that supports orthogonal synchronization of both programs and data. This model eases the programmer’s task, and sits perfectly in the world of full service computing.<br><br>I have been discussing language support for this vision of software services publicly since<a href="http://www.bracha.org/oopsla05-dls-talk.pdf" contenteditable="false" target="_blank" rel="noopener noreferrer"> my talk</a> at DLS 2005, and privately long before. Newspeak’s modularity and reflection features dovetail perfectly with that.<br><br>Newspeak allows programs to be represented as objects; these objects are compact and self contained, thanks to the modularity of Newspeak code. Newspeak programs can be updated on the fly, atomically. Together, these two features provide a foundation for synchronizing programs. And the Newspeak VM supports shallow object immutability, which helps us synchronize data. On this basis, we have implemented experimental support for orthogonal synchronization, though it is very immature. I hope that in the future, we can provide an open software service based on this idea.<br><br>Of course, the radical edge the objects as software services vision is the complete abolishment of versions for libraries as well as applications. That is, I admit,  untested, controversial and futuristic. However, with respect to applications, it is already starting to happen.
+<div><br></div><div><br></div>
+<div class="ampleforth" documentname="TheBraveNewWorldOfFullServiceComputing" name="| section toggles |
+section:: [:name :date :body |
+    collapsed: (row: { (label: name) bold. label: ' — ', date. })
+    expanded: (column: {
+        row: { (label: name) bold. label: ' — ', date. }.
+        html: body.
+    })
+].
+toggles:: {
+    section value: 'Unknown' value: '4/02/2010 3:18 PM' value: '&lt;p&gt;
+Oh so your buying an iPad.
+&lt;/p&gt;'.
+    section value: 'Unknown' value: '4/02/2010 4:29 PM' value: '&lt;p&gt;
+Hi Gilad,&lt;br&gt;&lt;br&gt;    as you state, there are web apps that get close to your vision.  What''s the chance of a well-designed language-oriented approach catching on against the tide of ad-hocery?&lt;br&gt;&lt;br&gt;cheers&lt;br&gt;Eliot
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/02/2010 4:37 PM' value: '&lt;p&gt;
+Zohar: soon, perhaps. But I have my mac. The point is that in some years (5-10) only people like us will use traditional computers. Most people won''t need or want them.&lt;br&gt;&lt;br&gt;Eliot:  Web apps are still a ways off, but they will get there. The point is, how hard is it to build them, and build them right? Newspeak should make it easy to do so, and allow you to deliver it via the web. Don''t be a defeatist: help get it done instead!
+&lt;/p&gt;'.
+    section value: 'Paul Beckford' value: '4/03/2010 7:01 PM' value: '&lt;p&gt;
+Hi  Gilad,&lt;br&gt;&lt;br&gt;As you know, I''ve been following Newspeak and your blog for awhile now, and your more conservative ideas around SaaS have such a feeling of inevitability about them that I''m left thinking when rather then if they will ever come to pass.&lt;br&gt;&lt;br&gt;Being a good idea in itself isn''t sufficient alas. Timing seems to be important too, and an idea can appear before people are ready. Our industry can be very short sighted and not see beyond the end of its nose.&lt;br&gt;&lt;br&gt;Are you finding that Newspeak is suffering from the phenomena I describe?&lt;br&gt;&lt;br&gt;After hearing about your funding difficulties I had hoped that a far sighted benefactor would have taken you under their wing by know. An internet company that makes most of its money through advertising came to mind :)&lt;br&gt;&lt;br&gt;I must admit I am  disappointed that you haven''t been able to announce such a benefactor by now. I''m also concerned about your own personal financial circumstance.&lt;br&gt;&lt;br&gt;I feel like I''m prying, but I am a true well wisher. Are you in a position to give an update about your funding situation?&lt;br&gt;&lt;br&gt;Regards,&lt;br&gt;&lt;br&gt;Paul.&lt;br&gt;&lt;br&gt;(PS. After witnessing the amount of money that gets wasted on developing absolute tripe, I find it absolutely amazing that something as revolutionary as Newspeak cannot attract funding - there I''ve said it!)
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/03/2010 7:36 PM' value: '&lt;p&gt;
+Hi Paul,&lt;br&gt;&lt;br&gt;Thank you for your concern!&lt;br&gt;I wish you wouldn''t worry about me personally - if my supply of foie gras runs low, I''ll let you know :-).&lt;br&gt;&lt;br&gt;Newspeak itself remains unfunded however.  Far sightedness is a much rarer disorder than short sightedness. &lt;br&gt;&lt;br&gt;We do have several students doing work on it though. One of these has just completed his masters (we''ll announce his work soon enough) and should be continuing with a PhD, I hope. There are a couple of more master students in the pipeline.&lt;br&gt;&lt;br&gt;The fact that work continues, and we''ve put out a couple of update releases, and expect to have more soon, means that Newspeak''s situation is actually better than might be expected. &lt;br&gt;&lt;br&gt;Of course, we''d make much faster progress with a fully funded team of full time professionals; the absence of said team is frustrating at times. Such is the cost or being ahead of the curve.
+&lt;/p&gt;'.
+    section value: 'James' value: '4/05/2010 12:33 AM' value: '&lt;p&gt;
+Hi Gilad&lt;br&gt;&lt;br&gt;&lt;i&gt;The new applications are in fact compelled to keep their persistent data in silos tied to the application, &lt;/i&gt;&lt;br&gt;&lt;br&gt;So, somewhat cynically, this doesn''t sound much like &lt;i&gt;objects&lt;/i&gt; to me. Sounds like - let''s see, an encapsulated component - a bunch of code offering a set interface, with an opaque implementation - that operates on collection of instances of an opaque data structures. Those data structures instances - any or all of ''em - can only be accessed via the encapsulated component.&lt;br&gt;&lt;br&gt;Yep - these things sound like Abstract Data Types to me, not objects...&lt;br&gt;&lt;br&gt;James
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/05/2010 9:02 AM' value: '&lt;p&gt;
+James: Except that no types are involved, and the silos communicate via message-passing, so any resemblance to ADTs is, as you say, cynicism.
+&lt;/p&gt;'.
+    section value: 'Anonymous' value: '4/06/2010 3:30 AM' value: '&lt;p&gt;
+One of the problems with blurring the boundary between storage and program is that it can be difficult to manage lifetimes. I think we can take it as a given that data lives much longer than the programs operating on it. The separation between data and program thus comes in handy if you store your data in a model that is not bound to a particular application (e.g. the relational model). Also, if your program gets corrupted, it is relatively easy to save the data. Not so if your program is entangled with the data.&lt;br&gt;&lt;br&gt;That being said, I could imagine a programming environment that has lots of immutable objects and small amounts of mutable state as a working set. If you tinker with it all the way down, you might find that a generational garbage collector allows you to persist application state in a transactional manner (e.g. call commit at known good points -&amp;gt; perform garbage collection and persist/synchronize the permanent generation).&lt;br&gt;&lt;br&gt;This is already happening to some degree in typical JavaScript applications, except that you have to build all the abstractions yourself.
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/06/2010 6:48 AM' value: '&lt;p&gt;
+Martin: Good points. If you look at the objects-as-software-services talk and write-up, there is a notion of transient vs. persistent references. Syncing happens at very particular points (program is quiescent).  So I think the old problems of orthogonal persistence can be overcome.
+&lt;/p&gt;'.
+    section value: 'James' value: '4/08/2010 6:02 AM' value: '&lt;p&gt;
+&lt;i&gt;Except that no types are involved&lt;/i&gt;&lt;br&gt;&lt;br&gt;well no static types - but I don''t think types are essential to my argument...&lt;br&gt;&lt;br&gt;&lt;i&gt;and the silos communicate via message-passing,&lt;/i&gt;&lt;br&gt;&lt;br&gt;sure. but unless you are subclassing whole applications, I don''t think it''s relevant whether&lt;br&gt;messages are resolved dynamically a la Newspeak&lt;br&gt;or statically al la Ada. I think the first version of CLU used dynamic binding by mistake - so I don''t think this is the distinction I was trying to make.&lt;br&gt;&lt;br&gt;&lt;i&gt; so any resemblance to ADTs is, as you say, cynicism.&lt;/i&gt;&lt;br&gt;&lt;br&gt;So thinking again, rather than &quot;cynical&quot;, perhaps &quot;topological&quot; would have been a better word. As I understand this model, data lives only in silos within applications - data are owned by the applications. So I might have a contacts application and an email application and a wordprocessor application, each of which stores persistent data objects (contacts, messages, documents) in such a way that they are only directly accessible within that application.  &lt;br&gt;&lt;br&gt;This, for example, follows the app-centric model of the iPhone rather than a desktop metaphor.  If I want to get a list of all my documents, i do that within the word-processor. If I want to email one of those documents, the word-processor application has to somehow coordinate with the email application. &lt;br&gt;&lt;br&gt;In terms of the (yes, message-passing) interface of each application, statically or dynamically, the key persistent internal data objects don''t ever cross that interface (leave the silo).  Actually, It''s a pretty strong ownership condition. Whatever gets sent&lt;br&gt;from the wordprocess to the emailler isn''t the internal data, most likely it is some external representation of that data  at most it would be a transient deep clone. &lt;br&gt;&lt;br&gt;So while this isn''t traditionally statically typed ADTs the topology is similar to something like CLU or Ada - where a type or package provides all the operations for dealing with data of a particular type - rather than self describing self sufficient objects&lt;br&gt;that are accessible and that provide sophisticated behaviour outside their owning application silo.
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/08/2010 6:40 AM' value: '&lt;p&gt;
+James: In ADTs, the data are exchanged with other ADTs, as opaque (or semi-opaque, say comparable via operators such as identity) entities. This is why types are essential to that model - otherwise, you don''t know who the data belongs to. S&lt;br&gt;&lt;br&gt;o I don''t see the silo model as ADTs at all. Rather, apps are objects that communicate by pure message passing.  More like actors than ADTs.
+&lt;/p&gt;'.
+    section value: 'Anonymous' value: '4/08/2010 6:57 AM' value: '&lt;p&gt;
+Observation:&lt;br&gt;&lt;br&gt;&quot;Full-service computing&quot; isn''t a bad moniker, but I prefer &lt;br&gt;&lt;br&gt;&quot;fat sow, with blind helpless users sucking on its teats  -computing&quot;&lt;br&gt;&lt;br&gt;The extra 45 characters really do pay their way, imo&lt;br&gt;&lt;br&gt;&lt;br&gt;Question:&lt;br&gt;&lt;br&gt;Does Clojure style persistence fit somewhere here, especially for Avarice? The word &quot;persistence&quot; seems to have an unusual meaning to Clojurerers (you may know how it came to be overloaded) but a &quot;nothin but diffs&quot; state model seems to me like a good match for very mobile objects.
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/08/2010 8:07 AM' value: '&lt;p&gt;
+Peter F:&lt;br&gt;&lt;br&gt;&quot;Fat-sow'' or not, the fact is that most people would rather get their meat (I find milk too mixed a metaphor) without running a pig farm or being their own butcher.  &lt;br&gt;&lt;br&gt;Re: persistence. I assume you are referring to functional data structure meaning of &quot;persistent&quot;. I don''t immediately see a relationship (though that concept may apply in Sloth and Avarice). &lt;br&gt;&lt;br&gt;It isn''t terminology I use. When I say &quot;persistent&quot; I mean persistent the way it is widely used - committed to non-volatile storage.
+&lt;/p&gt;'.
+    section value: 'James' value: '4/08/2010 3:13 PM' value: '&lt;p&gt;
+Still going:&lt;br&gt;&lt;br&gt;&lt;i&gt;In ADTs, the data are exchanged with other ADTs, as opaque (or semi-opaque, say comparable via operators such as identity) entities.&lt;/i&gt;&lt;br&gt;&lt;br&gt;Sure. But isn''t that how data are exchanged between applications in this model?&lt;br&gt;&lt;br&gt;&lt;i&gt; This is why types are essential to that model - otherwise, you don''t know who the data belongs to. &lt;/i&gt;&lt;br&gt;&lt;br&gt;Right - but in dynamic systems we''ve lots of other options there...&lt;br&gt;&lt;br&gt;&lt;i&gt; I don''t see the silo model as ADTs at all. Rather, apps are objects that communicate by pure message passing. More like actors than ADTs.&lt;/i&gt;&lt;br&gt;&lt;br&gt;Right - I think. I guess the questions for me are - what kinds of objects can be passed along as arguments to the message; and if any of those objects &quot;belong&quot; to an application, where does their behaviour come from?&lt;br&gt;&lt;br&gt;Now one answer is that the message arguments are only basic library objects, integers, strings, or perhaps some kind of JSON, but without much application-specific behaviour (because that''s all in the application).  This is what I''ve been assuming.&lt;br&gt;&lt;br&gt;Now this morning I realised perhaps you have another answer: the arguments can be any kind of object, even if it belongs to the application silo &lt;i&gt;because the class of that object will be nested inside the application object&lt;/i&gt;.   Of course, this kind of relationship is precisely what Newspeak gives you compared with Self and Smalltalk,&lt;br&gt;&lt;br&gt;I''m not convinced this addresses all the problems with upgrades and synchronisation, but I can see that it could help.
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/08/2010 5:24 PM' value: '&lt;p&gt;
+James: We''re just starting on the actor model for Newspeak (there''s a grad student on the case). &lt;br&gt;&lt;br&gt;The current plan is to something very close to E. That means that not only values (deeply immutable objects) can cross actor boundaries, but remote references, which represent specific (and possibly mutable) objects in another actor.   Such a reference is really a convenient extra gateway to another actor. So it''s not arbitrary objects (otherwise, you''re back to threads, which are BAD BAD BAD). On the other hand, it''s not strictly values.&lt;br&gt;&lt;br&gt;In such a model, any other process/app is an actor and you communicate with it via message passing.&lt;br&gt;&lt;br&gt;So, overall, you''re not far off.
+&lt;/p&gt;'.
+    section value: 'James' value: '4/09/2010 3:25 AM' value: '&lt;p&gt;
+&lt;i&gt;James: We''re just starting on the actor model for Newspeak (there''s a grad student on the case).&lt;/i&gt;&lt;br&gt;&lt;br&gt;excellent, excellent. I keep trying to encourage students to look at Newspeak but so far no joy.&lt;br&gt;&lt;br&gt;&lt;i&gt;... not only values (deeply immutable objects) can cross actor boundaries, but remote references, w.... On the other hand, it''s not strictly values.&lt;/i&gt;&lt;br&gt;&lt;br&gt;all makes sense. The Actor &quot;owns&quot; its representation, as I''d put it in another life. &lt;br&gt;I guess the interesting question (in that other life) is whether you stop the wrong objects being accessed from the wrong place - or the corollary - what does it mean for an object to turn into a remove reference.  Again, the class nesting can nicely define the right place (or the wrong place): with VM support you can either trap wrong message sends, or wrap objects in remote references. &lt;br&gt;&lt;br&gt;Hmm. Interesting. How dynamic do you want to be?
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/09/2010 9:44 AM' value: '&lt;p&gt;
+James: for sanity''s sake, I think one wants to make sure that only remote references and pure values cross the actor line. That is, enforce it (unlike, say, Scala actors).  Values may require VM support (a deeply immutable bit) unless one works in apure functional setting like Avarice/Sloth. Remote refernce wrapping can be done by the compiler or the actor library (depending on whether async sends have a special syntax or not; I lean toward special syntax in this case).
+&lt;/p&gt;'.
+    section value: 'Steve' value: '4/09/2010 11:18 AM' value: '&lt;p&gt;
+Hi Gilad,&lt;br&gt;It probably won''t surprise you to hear that I am no fan of this model for the future of mass-market computing.&lt;br&gt;&lt;br&gt;I see too much evidence of evil actors forcing their users to one particular service offering, rather than a world of competing services.&lt;br&gt;&lt;br&gt;Worse still, there is growing evidence that such service providers will behave as if they own your data. &lt;br&gt;&lt;br&gt;Google already acts in this way and Apple is moving in this direction.&lt;br&gt;&lt;br&gt;&quot;DRM? Not us, it was those big bad studios. They made us do it. We fought the good fight and eventually forced them to get rid of it ...&quot;&lt;br&gt;&lt;br&gt;Except that music downloaded from iTunes and LaLa is watermarked for a particular user. Put your music in the cloud and suddenly it''s not yours anymore and we have DRM mark 2.
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/09/2010 1:44 PM' value: '&lt;p&gt;
+Hi Steve,&lt;br&gt;&lt;br&gt;I imagine you''ve seen:&lt;br&gt;&lt;br&gt;http://www.appleinsider.com/articles/10/04/08/apples_iphone_4_sdk_license_bans_flash_java_mono_apps.html&lt;br&gt;&lt;br&gt;this is most unfortunate, and rather short sighted in my view.  This is not inherent to the software service model however. I can envision a much more open version. &lt;br&gt;&lt;br&gt;In any case, whether one is a fan or not, one cannot ignore the facts. The transition is happening, like it or not.
+&lt;/p&gt;'.
+    section value: 'Steve' value: '4/09/2010 3:17 PM' value: '&lt;p&gt;
+Hi Gilad,&lt;br&gt;Indeed. I think it''s both incredibly arrogant and practically unenforceable. Unless you require apps to be submitted in source form, how can you police it?&lt;br&gt;&lt;br&gt;Still, it will make life uncomfortable for developers who choose to develop in languages other than those Apple deems acceptable.&lt;br&gt;&lt;br&gt;No Newspeak on the iPhone or iPad any time soon then! No DSLs; no code generation of any kind it would seem!&lt;br&gt;&lt;br&gt;Thanks Steve. Another brilliant move.&lt;br&gt;&lt;br&gt;As you say, this sort of move is not inherent in the kind of full-service approach you are advocating, but I think it is telling that the most significant example of such a service provider grasps at such draconian measures.
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '4/09/2010 4:00 PM' value: '&lt;p&gt;
+Steve,&lt;br&gt;&lt;br&gt;a) The service model is more centralized than the historic personal computer, and so lends itself more readily to this sort of thing, I confess.&lt;br&gt;&lt;br&gt;b) Jobs'' moves are usually brilliant; it is generally a joy to watch. I just hope he''s wrong this time. It''s early days yet, and every action begets a reaction.&lt;br&gt;&lt;br&gt;c) Newspeak makes perfect sense on the iPhone. One reason I did not pursue it was that even prior to this latest twist, the model made it difficult. If one could simply deploy a shared VM and be done, it would be quite simple.  I thought about compiling into Objective-C. The absence of GC on the iPhone version was a major deterrent. I had hoped that would change, &lt;br&gt;&lt;br&gt;However,  now there seems to be no reason to bother.&lt;br&gt;&lt;br&gt;d) It''s fascinating to watch this unfold. I bet Google is thrilled. Never a dull moment.
+&lt;/p&gt;'.
+    section value: 'naedyr' value: '4/13/2010 11:41 PM' value: '&lt;p&gt;
+&quot;We still haven''t seen an integration of the app store model with backup&quot;&lt;br&gt;&lt;br&gt;Steam cloud has had this feature for a couple of years now:&lt;br&gt;http://en.wikipedia.org/wiki/Steam_(content_delivery)#Steam_Cloud&lt;br&gt;&lt;br&gt;the user just supplies the hardware, installs steam, then logs in. Steam handles the rest
+&lt;/p&gt;'.
+    section value: 'shawn' value: '8/21/2012 9:51 PM' value: '&lt;p&gt;
+Gilad,&lt;br&gt;&lt;br&gt;I just came across your Google tech talk on this subject: &lt;br&gt;http://www.youtube.com/watch?v=_cBGtvjaLM0&lt;br&gt;&lt;br&gt;I was quite surprised by some of the comments coming from google folk. Given that they already are in the spirit of maintaining software services on an ongoing basis and they couldn''t draw the parallels was... entertaining. Maybe it''s a generational thing? The first &quot;service&quot; rather than web page I can remember using is Hotmail some time around ''97 ''98. I''ve been using software services for literally half my life.&lt;br&gt;&lt;br&gt;Anyway I digress. The one point I found didn''t need to be as dire is passing on 3rd party library live update issues to your customers. You could equally have the client app pull HEAD from the 3rd party or YOU (as the app vendor) could act as a re-distributor  of the library at a certain snapshot in time (notice I''m trying hard not to use the word version).&lt;br&gt;&lt;br&gt;The cost then becomes yours to manage. Digress too much and you''ll be stuck managing and bug fixing someone else''s old library that doesn''t even look the same anymore. The point is that even in code bases we own and serve as web apps, we constantly make trade offs between prioritizing deploying a new feature today or dealing with tech debt. Pushing a deploy with a newer version of the 3rd party lib is no different.&lt;br&gt;&lt;br&gt;I realize this provides a slippery slope OUT of nirvana but it''s also a migration path and one that''s familiar to web devs today (e.g. Rails + Bundler).
+&lt;/p&gt;'.
+    section value: 'Gilad Bracha' value: '8/22/2012 8:53 PM' value: '&lt;p&gt;
+Hi Shawn,&lt;br&gt;&lt;br&gt;I agree with your comments. &lt;br&gt;&lt;br&gt;Re: the entertaining lack of appreciation: Over the years things have become more and more clear.  By now, everyone understands that off line + sync is the way to go.&lt;br&gt;&lt;br&gt;Of course, the reality is very ad hoc, as I feared it would be.  However, progress is being made.
+&lt;/p&gt;'.
+}.
+column: {
+    row: {
+        (label: 'Historical Reader Comments') bold.
+        largeBlank.
+        imageButton: platform hopscotch images expandImage
+            action: [toggles do: [:t | t expand]]
+            size: platform hopscotch styleButtonSize.
+        smallBlank.
+        imageButton: platform hopscotch images collapseImage
+            action: [toggles do: [:t | t collapse]]
+            size: platform hopscotch styleButtonSize.
+    }.
+    label: 'These are comments preserved from the original Blogger post. This document does not support adding or editing comments.'.
+    zebra: (column: toggles).
+}" contenteditable="false" style="display: inline-flex;" ampletid="4"></div>
+</div></div></body></div>   <script type="text/javascript">
+      function scheduleTurn(timeout) {
+        if (timeout >= 0) {
+          setTimeout(function() {
+            var timeout = Module._handle_message();
+            scheduleTurn(timeout);
+          }, timeout);
+        }
+      }
+
+      var Module = {
+        noInitialRun: true,
+        noExitRuntime: true,
+        onRuntimeInitialized: function() {
+          var url = new URLSearchParams(window.location.search);
+          var request = new XMLHttpRequest();
+          request.open("GET", url.get("snapshot"), true);
+          request.responseType = "arraybuffer";
+          request.onload = function (event) {
+            var jsBuffer = new Uint8Array(request.response);
+            var cBuffer = _malloc(jsBuffer.length);
+            writeArrayToMemory(jsBuffer, cBuffer);
+            Module._load_snapshot(cBuffer, jsBuffer.length);
+            _free(cBuffer);
+            scheduleTurn(0);
+          };
+          request.send();
+        },
+        print: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.log(text);
+        },
+        printErr: function(text) {
+          if (arguments.length > 1) {
+            text = Array.prototype.slice.call(arguments).join(" ");
+          }
+          console.error(text);
+        },
+        setStatus: function(text) {
+          console.log(text);
+        },
+      };
+    </script>
+<script async type="text/javascript" src="primordialsoup.js"></script>
+    <script src="CodeMirror/lib/codemirror.js"></script>
+    <link rel="stylesheet" href="CodeMirror/lib/codemirror.css"></link>
+    <script src="CodeMirror/addon/display/autorefresh.js"></script>
